@@ -9,7 +9,10 @@ interface TemplateProps {
 }
 
 export const TemplateC: React.FC<TemplateProps> = ({ data, primaryColor = '#3a352f' }) => {
-  const { personal, experiences, education, skills, languages, achievements, references } = data;
+  const { personal, experiences, education, skills, languages, achievements, references, style } = data;
+  const uppercaseHeaders = style?.uppercaseHeaders !== false;
+  const showIcons = style?.showIcons !== false && style?.showSectionIcons !== false;
+  const headerClass = (base: string) => uppercaseHeaders ? `${base} uppercase` : base;
 
   return (
     <div className="bg-[#FAF8F5] text-[#2B2723] text-[11px] leading-snug w-full min-h-full font-serif p-7 border-12 border-[#DCD6CD] shadow-inner relative">
@@ -46,8 +49,8 @@ export const TemplateC: React.FC<TemplateProps> = ({ data, primaryColor = '#3a35
         {/* Profile */}
         {personal.summary && (
           <div className="space-y-1">
-            <div className="flex items-center gap-1.5 text-[#3a352f] font-sans font-bold text-xs uppercase border-b border-[#E8E3DA] pb-0.5">
-              <User className="w-3.5 h-3.5" />
+            <div className={headerClass("flex items-center gap-1.5 text-[#3a352f] font-sans font-bold text-xs border-b border-[#E8E3DA] pb-0.5")}>
+              {showIcons && <User className="w-3.5 h-3.5" />}
               <span>Profile</span>
             </div>
             <p className="text-[10px] text-[#4A433A] leading-relaxed text-justify">{personal.summary}</p>
@@ -58,8 +61,8 @@ export const TemplateC: React.FC<TemplateProps> = ({ data, primaryColor = '#3a35
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Experience */}
           <div className="space-y-3">
-            <div className="flex items-center gap-1.5 text-[#3a352f] font-sans font-bold text-xs uppercase border-b border-[#E8E3DA] pb-0.5">
-              <Briefcase className="w-3.5 h-3.5" />
+            <div className={headerClass("flex items-center gap-1.5 text-[#3a352f] font-sans font-bold text-xs border-b border-[#E8E3DA] pb-0.5")}>
+              {showIcons && <Briefcase className="w-3.5 h-3.5" />}
               <span>Work Experience</span>
             </div>
             <div className="space-y-3">
@@ -84,8 +87,8 @@ export const TemplateC: React.FC<TemplateProps> = ({ data, primaryColor = '#3a35
 
           {/* Education */}
           <div className="space-y-3">
-            <div className="flex items-center gap-1.5 text-[#3a352f] font-sans font-bold text-xs uppercase border-b border-[#E8E3DA] pb-0.5">
-              <GraduationCap className="w-3.5 h-3.5" />
+            <div className={headerClass("flex items-center gap-1.5 text-[#3a352f] font-sans font-bold text-xs border-b border-[#E8E3DA] pb-0.5")}>
+              {showIcons && <GraduationCap className="w-3.5 h-3.5" />}
               <span>Education</span>
             </div>
             <div className="space-y-3">
@@ -106,8 +109,8 @@ export const TemplateC: React.FC<TemplateProps> = ({ data, primaryColor = '#3a35
         {/* Skills & Languages */}
         <div className="grid grid-cols-2 gap-6 pt-2 border-t border-[#E8E3DA]">
           <div>
-            <div className="flex items-center gap-1.5 text-[#3a352f] font-sans font-bold text-xs uppercase mb-2">
-              <Award className="w-3.5 h-3.5" />
+            <div className={headerClass("flex items-center gap-1.5 text-[#3a352f] font-sans font-bold text-xs mb-2")}>
+              {showIcons && <Award className="w-3.5 h-3.5" />}
               <span>Skills</span>
             </div>
             <div className={data.skillStyle === 'tags' ? 'flex flex-wrap gap-1.5' : 'grid grid-cols-1 gap-2'}>
@@ -124,8 +127,8 @@ export const TemplateC: React.FC<TemplateProps> = ({ data, primaryColor = '#3a35
           </div>
 
           <div>
-            <div className="flex items-center gap-1.5 text-[#3a352f] font-sans font-bold text-xs uppercase mb-2">
-              <Globe className="w-3.5 h-3.5" />
+            <div className={headerClass("flex items-center gap-1.5 text-[#3a352f] font-sans font-bold text-xs mb-2")}>
+              {showIcons && <Globe className="w-3.5 h-3.5" />}
               <span>Languages</span>
             </div>
             <div className="space-y-2">
@@ -151,7 +154,7 @@ export const TemplateC: React.FC<TemplateProps> = ({ data, primaryColor = '#3a35
         <div className="grid grid-cols-2 gap-6 pt-2 border-t border-[#E8E3DA]">
           {achievements.length > 0 && (
             <div className="space-y-2">
-              <div className="font-sans font-bold text-xs uppercase text-[#3a352f]">Achievements</div>
+              <div className={headerClass("font-sans font-bold text-xs text-[#3a352f]")}>Achievements</div>
               {achievements.map((ach) => (
                 <div key={ach.id} className="text-[10px] font-sans">
                   <div className="font-bold text-[#2B2723]">{ach.title} <span className="text-[9px] text-[#7A7163]">({ach.date})</span></div>
@@ -163,7 +166,7 @@ export const TemplateC: React.FC<TemplateProps> = ({ data, primaryColor = '#3a35
 
           {references.length > 0 && (
             <div className="space-y-2">
-              <div className="font-sans font-bold text-xs uppercase text-[#3a352f]">References</div>
+              <div className={headerClass("font-sans font-bold text-xs text-[#3a352f]")}>References</div>
               <div className="grid grid-cols-2 gap-2">
                 {references.map((ref) => (
                   <div key={ref.id} className="text-[9.5px] font-sans">

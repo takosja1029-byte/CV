@@ -116,9 +116,14 @@ export function sanitizeCVData(raw: unknown): CVData {
       sidebarSections: Array.isArray(d.style?.sidebarSections)
         ? d.style.sidebarSections
         : (INITIAL_CV_DATA.style?.sidebarSections || ['personal', 'skills', 'languages', 'references']),
-      groupByInstitution: Boolean(d.style?.groupByInstitution),
+      sectionInSidebar: (d.style?.sectionInSidebar && typeof d.style.sectionInSidebar === 'object')
+        ? d.style.sectionInSidebar
+        : {},
+      groupByInstitution: Boolean(d.style?.groupByInstitution || d.style?.groupByEmployer),
+      groupByEmployer: Boolean(d.style?.groupByEmployer || d.style?.groupByInstitution),
       showLogos: d.style?.showLogos !== false,
-      showIcons: d.style?.showIcons !== false,
+      showIcons: d.style?.showIcons !== false && d.style?.showSectionIcons !== false,
+      showSectionIcons: d.style?.showIcons !== false && d.style?.showSectionIcons !== false,
       uppercaseHeaders: d.style?.uppercaseHeaders !== false,
     },
   };
