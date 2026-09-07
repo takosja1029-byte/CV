@@ -9,7 +9,11 @@ interface TemplateProps {
 }
 
 export const TemplateK: React.FC<TemplateProps> = ({ data, primaryColor = '#1d4ed8' }) => {
-  const { personal, experiences, education, skills, languages, achievements, references } = data;
+  const { personal, experiences, education, skills, languages, achievements, references, style } = data;
+  const uppercaseHeaders = style?.uppercaseHeaders !== false;
+  const showIcons = style?.showIcons !== false && style?.showSectionIcons !== false;
+  const headerClass = (base: string) => uppercaseHeaders ? `${base} uppercase` : base;
+  const st = (s: string) => uppercaseHeaders ? s.toUpperCase() : s;
 
   return (
     <div className="bg-white text-slate-800 text-[11px] leading-snug w-full min-h-full font-sans-ui grid grid-cols-12">
@@ -28,8 +32,8 @@ export const TemplateK: React.FC<TemplateProps> = ({ data, primaryColor = '#1d4e
         {/* ABOUT ME box */}
         {personal.summary && (
           <div className="border border-blue-200 rounded overflow-hidden">
-            <div className="bg-blue-600 text-white font-bold text-xs uppercase px-3 py-1 tracking-wider">
-              ABOUT ME
+            <div className={headerClass("bg-blue-600 text-white font-bold text-xs px-3 py-1 tracking-wider")}>
+              {st('About Me')}
             </div>
             <div className="p-2.5 bg-blue-50/30 text-[10px] text-slate-600 leading-relaxed text-justify">
               {personal.summary}
@@ -40,8 +44,8 @@ export const TemplateK: React.FC<TemplateProps> = ({ data, primaryColor = '#1d4e
         {/* SKILLS */}
         {skills && skills.length > 0 && (
           <div className="border border-blue-200 rounded overflow-hidden">
-            <div className="bg-blue-600 text-white font-bold text-xs uppercase px-3 py-1 tracking-wider">
-              SKILLS
+            <div className={headerClass("bg-blue-600 text-white font-bold text-xs  px-3 py-1 tracking-wider")}>
+              {st('Skills')}
             </div>
             <div className={data.skillStyle === 'tags' ? 'p-2.5 bg-blue-50/30 flex flex-wrap gap-1.5' : 'p-2.5 bg-blue-50/30 space-y-2'}>
               {skills.map((item, idx) => (
@@ -59,8 +63,8 @@ export const TemplateK: React.FC<TemplateProps> = ({ data, primaryColor = '#1d4e
         {/* LANGUAGES */}
         {languages && languages.length > 0 && (
           <div className="border border-blue-200 rounded overflow-hidden">
-            <div className="bg-blue-600 text-white font-bold text-xs uppercase px-3 py-1 tracking-wider">
-              LANGUAGES
+            <div className={headerClass("bg-blue-600 text-white font-bold text-xs  px-3 py-1 tracking-wider")}>
+              {st('Languages')}
             </div>
             <div className="p-2.5 bg-blue-50/30 space-y-2">
               {languages.map((lang, idx) => {
@@ -83,8 +87,8 @@ export const TemplateK: React.FC<TemplateProps> = ({ data, primaryColor = '#1d4e
 
         {/* CONTACT ME box matching Column K */}
         <div className="border border-blue-200 rounded overflow-hidden">
-          <div className="bg-blue-600 text-white font-bold text-xs uppercase px-3 py-1 tracking-wider">
-            CONTACT ME
+          <div className={headerClass("bg-blue-600 text-white font-bold text-xs px-3 py-1 tracking-wider")}>
+            {st('Contact Me')}
           </div>
           <div className="p-2.5 bg-blue-50/30 space-y-1.5 text-[10px] text-slate-600">
             {personal.gender && <div className="flex items-center gap-1.5"><User className="w-3 h-3 text-blue-600" /><span>{personal.gender}</span></div>}
@@ -101,8 +105,8 @@ export const TemplateK: React.FC<TemplateProps> = ({ data, primaryColor = '#1d4e
         {/* ACHIEVEMENTS */}
         {achievements && achievements.length > 0 && (
           <div className="border border-blue-200 rounded overflow-hidden">
-            <div className="bg-blue-600 text-white font-bold text-xs uppercase px-3 py-1 tracking-wider">
-              ACHIEVEMENTS
+            <div className={headerClass("bg-blue-600 text-white font-bold text-xs  px-3 py-1 tracking-wider")}>
+              {st('Achievements')}
             </div>
             <div className="p-2.5 bg-blue-50/30 space-y-2 text-[9.5px]">
               {achievements.map((ach) => (
@@ -122,8 +126,8 @@ export const TemplateK: React.FC<TemplateProps> = ({ data, primaryColor = '#1d4e
         {experiences && experiences.length > 0 && (
           <div className="space-y-4">
             <div className="border border-blue-600 rounded">
-              <div className="bg-blue-600 text-white font-bold text-xs uppercase px-4 py-1.5 tracking-wider">
-                WORK EXPERIENCE
+              <div className={headerClass("bg-blue-600 text-white font-bold text-xs  px-4 py-1.5 tracking-wider")}>
+                {st('Work Experience')}
               </div>
             </div>
 
@@ -156,8 +160,8 @@ export const TemplateK: React.FC<TemplateProps> = ({ data, primaryColor = '#1d4e
         {education && education.length > 0 && (
           <div className="space-y-4">
             <div className="border border-blue-600 rounded">
-              <div className="bg-blue-600 text-white font-bold text-xs uppercase px-4 py-1.5 tracking-wider">
-                EDUCATION
+              <div className={headerClass("bg-blue-600 text-white font-bold text-xs  px-4 py-1.5 tracking-wider")}>
+                {st('Education')}
               </div>
             </div>
 
@@ -178,8 +182,8 @@ export const TemplateK: React.FC<TemplateProps> = ({ data, primaryColor = '#1d4e
         {references && references.length > 0 && (
           <div className="space-y-3">
             <div className="border border-blue-600 rounded">
-              <div className="bg-blue-600 text-white font-bold text-xs uppercase px-4 py-1.5 tracking-wider">
-                REFERENCES
+              <div className={headerClass("bg-blue-600 text-white font-bold text-xs  px-4 py-1.5 tracking-wider")}>
+                {st('References')}
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3 text-[9.5px]">

@@ -9,7 +9,11 @@ interface TemplateProps {
 }
 
 export const TemplateM: React.FC<TemplateProps> = ({ data, primaryColor = '#0284c7' }) => {
-  const { personal, experiences, education, skills, languages, achievements, references } = data;
+  const { personal, experiences, education, skills, languages, achievements, references, style } = data;
+  const uppercaseHeaders = style?.uppercaseHeaders !== false;
+  const showIcons = style?.showIcons !== false && style?.showSectionIcons !== false;
+  const headerClass = (base: string) => uppercaseHeaders ? `${base} uppercase` : base;
+  const st = (s: string) => uppercaseHeaders ? s.toUpperCase() : s;
 
   return (
     <div className="bg-white text-slate-800 text-[11px] leading-snug w-full min-h-full font-sans-ui">
@@ -30,8 +34,8 @@ export const TemplateM: React.FC<TemplateProps> = ({ data, primaryColor = '#0284
         <div className="col-span-5 bg-[#0284c7] text-white p-6 space-y-5">
           {/* CONTACT */}
           <div className="space-y-2">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-sky-100 border-b border-white/30 pb-1">
-              CONTACT
+            <h2 className={headerClass("text-xs font-bold  tracking-wider text-sky-100 border-b border-white/30 pb-1")}>
+              {st('Contact')}
             </h2>
             <div className="space-y-1.5 text-[10px] text-sky-100">
               {personal.gender && <div className="flex items-center gap-1.5"><User className="w-3 h-3 text-sky-200" /><span>{personal.gender}</span></div>}
@@ -48,8 +52,8 @@ export const TemplateM: React.FC<TemplateProps> = ({ data, primaryColor = '#0284
           {/* EDUCATION */}
           {education && education.length > 0 && (
             <div className="space-y-2">
-              <h2 className="text-xs font-bold uppercase tracking-wider text-sky-100 border-b border-white/30 pb-1">
-                EDUCATION
+              <h2 className={headerClass("text-xs font-bold  tracking-wider text-sky-100 border-b border-white/30 pb-1")}>
+                {st('Education')}
               </h2>
               <div className="space-y-2.5">
                 {education.map((edu) => (
@@ -66,8 +70,8 @@ export const TemplateM: React.FC<TemplateProps> = ({ data, primaryColor = '#0284
           {/* SKILLS */}
           {skills && skills.length > 0 && (
             <div className="space-y-2">
-              <h2 className="text-xs font-bold uppercase tracking-wider text-sky-100 border-b border-white/30 pb-1">
-                SKILLS
+              <h2 className={headerClass("text-xs font-bold  tracking-wider text-sky-100 border-b border-white/30 pb-1")}>
+                {st('Skills')}
               </h2>
               <div className={data.skillStyle === 'tags' ? 'flex flex-wrap gap-1.5' : 'space-y-2'}>
                 {skills.map((item, idx) => (
@@ -86,8 +90,8 @@ export const TemplateM: React.FC<TemplateProps> = ({ data, primaryColor = '#0284
           {/* LANGUAGES */}
           {languages && languages.length > 0 && (
             <div className="space-y-2">
-              <h2 className="text-xs font-bold uppercase tracking-wider text-sky-100 border-b border-white/30 pb-1">
-                LANGUAGES
+              <h2 className={headerClass("text-xs font-bold  tracking-wider text-sky-100 border-b border-white/30 pb-1")}>
+                {st('Languages')}
               </h2>
               <div className="space-y-2">
                 {languages.map((lang, idx) => {
@@ -111,8 +115,8 @@ export const TemplateM: React.FC<TemplateProps> = ({ data, primaryColor = '#0284
           {/* ACHIEVEMENTS */}
           {achievements && achievements.length > 0 && (
             <div className="space-y-2">
-              <h2 className="text-xs font-bold uppercase tracking-wider text-sky-100 border-b border-white/30 pb-1">
-                ACHIEVEMENTS
+              <h2 className={headerClass("text-xs font-bold  tracking-wider text-sky-100 border-b border-white/30 pb-1")}>
+                {st('Achievements')}
               </h2>
               <div className="space-y-2 text-[9.5px]">
                 {achievements.map((ach) => (
@@ -131,8 +135,8 @@ export const TemplateM: React.FC<TemplateProps> = ({ data, primaryColor = '#0284
           {/* PROFILE */}
           {personal.summary && (
             <div className="space-y-1">
-              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b-2 border-sky-600 pb-0.5">
-                PROFILE
+              <h2 className={headerClass("text-xs font-bold  tracking-wider text-slate-900 border-b-2 border-sky-600 pb-0.5")}>
+                {st('Profile')}
               </h2>
               <p className="text-[10px] text-slate-600 leading-relaxed text-justify">{personal.summary}</p>
             </div>
@@ -141,8 +145,8 @@ export const TemplateM: React.FC<TemplateProps> = ({ data, primaryColor = '#0284
           {/* WORK EXPERIENCE */}
           {experiences && experiences.length > 0 && (
             <div className="space-y-3">
-              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b-2 border-sky-600 pb-0.5">
-                WORK EXPERIENCE
+              <h2 className={headerClass("text-xs font-bold  tracking-wider text-slate-900 border-b-2 border-sky-600 pb-0.5")}>
+                {st('Work Experience')}
               </h2>
               <div className="space-y-4">
                 {experiences.map((exp) => (
@@ -168,8 +172,8 @@ export const TemplateM: React.FC<TemplateProps> = ({ data, primaryColor = '#0284
           {/* REFERENCES */}
           {references && references.length > 0 && (
             <div className="space-y-2">
-              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b-2 border-sky-600 pb-0.5">
-                REFERENCES
+              <h2 className={headerClass("text-xs font-bold  tracking-wider text-slate-900 border-b-2 border-sky-600 pb-0.5")}>
+                {st('References')}
               </h2>
               <div className="grid grid-cols-2 gap-3 text-[9.5px]">
                 {references.map((ref) => (

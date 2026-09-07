@@ -16,7 +16,9 @@ export const TemplateATSExecutive: React.FC<TemplateProps> = ({
   data,
   primaryColor = '#1e293b',
 }) => {
-  const { personal, experiences, education, skills, languages, achievements, projects, certifications } = data;
+  const { personal, experiences, education, skills, languages, achievements, projects, certifications, style } = data;
+  const uppercaseHeaders = style?.uppercaseHeaders !== false;
+  const headerClass = (base: string) => uppercaseHeaders ? `${base} uppercase` : base;
 
   return (
     <div className="bg-white text-gray-900 w-full min-h-full font-serif flex flex-col p-10 shadow-sm leading-relaxed">
@@ -49,7 +51,7 @@ export const TemplateATSExecutive: React.FC<TemplateProps> = ({
       {/* Executive Summary */}
       {personal.summary && (
         <section className="mb-5">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1 mb-2 font-sans">
+          <h2 className={headerClass("text-xs font-bold  tracking-wider text-gray-950 border-b border-gray-300 pb-1 mb-2 font-sans")}>
             Executive Summary
           </h2>
           <p className="text-xs leading-relaxed text-gray-800 text-justify">
@@ -61,7 +63,7 @@ export const TemplateATSExecutive: React.FC<TemplateProps> = ({
       {/* Professional Experience */}
       {experiences && experiences.length > 0 && (
         <section className="mb-5">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1 mb-3 font-sans">
+          <h2 className={headerClass("text-xs font-bold  tracking-wider text-gray-950 border-b border-gray-300 pb-1 mb-3 font-sans")}>
             Professional Experience
           </h2>
           <div className="space-y-4">
@@ -94,7 +96,7 @@ export const TemplateATSExecutive: React.FC<TemplateProps> = ({
       {/* Core Competencies & Skills */}
       {skills && skills.length > 0 && (
         <section className="mb-5">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1 mb-2 font-sans">
+          <h2 className={headerClass("text-xs font-bold  tracking-wider text-gray-950 border-b border-gray-300 pb-1 mb-2 font-sans")}>
             Core Competencies & Areas of Expertise
           </h2>
           <p className="text-xs text-gray-800 leading-relaxed">
@@ -114,7 +116,7 @@ export const TemplateATSExecutive: React.FC<TemplateProps> = ({
       {/* Education */}
       {education && education.length > 0 && (
         <section className="mb-5">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1 mb-2 font-sans">
+          <h2 className={headerClass("text-xs font-bold  tracking-wider text-gray-950 border-b border-gray-300 pb-1 mb-2 font-sans")}>
             Education & Academic Background
           </h2>
           <div className="space-y-2.5">
@@ -143,7 +145,7 @@ export const TemplateATSExecutive: React.FC<TemplateProps> = ({
       {/* Projects */}
       {projects && projects.length > 0 && (
         <section className="mb-5">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1 mb-2 font-sans">
+          <h2 className={headerClass("text-xs font-bold  tracking-wider text-gray-950 border-b border-gray-300 pb-1 mb-2 font-sans")}>
             Key Initiatives & Projects
           </h2>
           <div className="space-y-2.5">
@@ -167,7 +169,7 @@ export const TemplateATSExecutive: React.FC<TemplateProps> = ({
       {/* Certifications & Additional */}
       {certifications && certifications.length > 0 && (
         <section className="mb-3">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-gray-950 border-b border-gray-300 pb-1 mb-1.5 font-sans">
+          <h2 className={headerClass("text-xs font-bold  tracking-wider text-gray-950 border-b border-gray-300 pb-1 mb-1.5 font-sans")}>
             Certifications & Affiliations
           </h2>
           <div className="space-y-1 text-xs text-gray-800">

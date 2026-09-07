@@ -8,7 +8,10 @@ interface TemplateProps {
 }
 
 export const TemplateBlackBadge: React.FC<TemplateProps> = ({ data, primaryColor = '#000000' }) => {
-  const { personal, experiences, education, skills, languages, achievements, references } = data;
+  const { personal, experiences, education, skills, languages, achievements, references, style } = data;
+  const uppercaseHeaders = style?.uppercaseHeaders !== false;
+  const headerClass = (base: string) => uppercaseHeaders ? `${base} uppercase` : base;
+  const st = (s: string) => uppercaseHeaders ? s.toUpperCase() : s;
 
   return (
     <div className="bg-white text-[#111827] text-[11px] leading-relaxed w-full min-h-full font-sans p-8 md:p-10 flex flex-col justify-between select-text">
@@ -28,10 +31,10 @@ export const TemplateBlackBadge: React.FC<TemplateProps> = ({ data, primaryColor
         {/* PERSONAL DETAILS Section */}
         <div className="space-y-1.5">
           <div
-            className="inline-block px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-white rounded-xs"
+            className={headerClass("inline-block px-2.5 py-0.5 text-[10px] font-extrabold tracking-wider text-white rounded-xs")}
             style={{ backgroundColor: primaryColor }}
           >
-            PERSONAL DETAILS
+            {st('Personal Details')}
           </div>
           <div className="text-[10.5px] text-slate-800 space-y-0.5 pl-0.5">
             {personal.address && <div>{personal.address}</div>}
@@ -47,10 +50,10 @@ export const TemplateBlackBadge: React.FC<TemplateProps> = ({ data, primaryColor
         {personal.summary && (
           <div className="space-y-1.5">
             <div
-              className="inline-block px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-white rounded-xs"
+              className={headerClass("inline-block px-2.5 py-0.5 text-[10px] font-extrabold tracking-wider text-white rounded-xs")}
               style={{ backgroundColor: primaryColor }}
             >
-              PROFILE
+              {st('Profile')}
             </div>
             <p className="text-[10.5px] text-slate-800 leading-relaxed text-justify pl-0.5">
               {personal.summary}
@@ -62,10 +65,10 @@ export const TemplateBlackBadge: React.FC<TemplateProps> = ({ data, primaryColor
         {experiences && experiences.length > 0 && (
           <div className="space-y-3">
             <div
-              className="inline-block px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-white rounded-xs"
+              className={headerClass("inline-block px-2.5 py-0.5 text-[10px] font-extrabold tracking-wider text-white rounded-xs")}
               style={{ backgroundColor: primaryColor }}
             >
-              EMPLOYMENT
+              {st('Employment')}
             </div>
             <div className="space-y-3.5 pl-0.5">
               {experiences.map((exp) => (
@@ -96,10 +99,10 @@ export const TemplateBlackBadge: React.FC<TemplateProps> = ({ data, primaryColor
         {education && education.length > 0 && (
           <div className="space-y-2.5">
             <div
-              className="inline-block px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-white rounded-xs"
+              className={headerClass("inline-block px-2.5 py-0.5 text-[10px] font-extrabold tracking-wider text-white rounded-xs")}
               style={{ backgroundColor: primaryColor }}
             >
-              EDUCATION
+              {st('Education')}
             </div>
             <div className="space-y-3 pl-0.5">
               {education.map((edu) => (
@@ -126,10 +129,10 @@ export const TemplateBlackBadge: React.FC<TemplateProps> = ({ data, primaryColor
         {skills && skills.length > 0 && (
           <div className="space-y-2.5">
             <div
-              className="inline-block px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-white rounded-xs"
+              className={headerClass("inline-block px-2.5 py-0.5 text-[10px] font-extrabold tracking-wider text-white rounded-xs")}
               style={{ backgroundColor: primaryColor }}
             >
-              SKILLS
+              {st('Skills')}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 pl-0.5 text-[10px]">
               {skills.map((skill, idx) => {
@@ -157,10 +160,10 @@ export const TemplateBlackBadge: React.FC<TemplateProps> = ({ data, primaryColor
         {languages && languages.length > 0 && (
           <div className="space-y-2">
             <div
-              className="inline-block px-2.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-white rounded-xs"
+              className={headerClass("inline-block px-2.5 py-0.5 text-[10px] font-extrabold tracking-wider text-white rounded-xs")}
               style={{ backgroundColor: primaryColor }}
             >
-              LANGUAGES
+              {st('Languages')}
             </div>
             <div className="flex flex-wrap gap-4 pl-0.5 text-[10px] text-slate-800">
               {languages.map((l, idx) => (

@@ -7,7 +7,9 @@ interface TemplateProps {
 }
 
 export const TemplateTealGrid: React.FC<TemplateProps> = ({ data, primaryColor = '#3b8478' }) => {
-  const { personal, experiences, education, skills, achievements, references } = data;
+  const { personal, experiences, education, skills, achievements, references, style } = data;
+  const uppercaseHeaders = style?.uppercaseHeaders !== false;
+  const headerClass = (base: string) => uppercaseHeaders ? `${base} uppercase` : base;
 
   return (
     <div className="bg-white text-[#1f2937] text-[11px] leading-relaxed w-full min-h-full font-sans p-8 md:p-10 flex flex-col justify-between select-text">
@@ -25,7 +27,7 @@ export const TemplateTealGrid: React.FC<TemplateProps> = ({ data, primaryColor =
         {/* Personal details Box */}
         <div className="space-y-0">
           <div
-            className="w-full text-white px-3 py-1 text-xs font-bold tracking-wide"
+            className={headerClass("w-full text-white px-3 py-1 text-xs font-bold tracking-wide")}
             style={{ backgroundColor: primaryColor }}
           >
             Personal details
@@ -52,7 +54,7 @@ export const TemplateTealGrid: React.FC<TemplateProps> = ({ data, primaryColor =
         {personal.summary && (
           <div className="space-y-0">
             <div
-              className="w-full text-white px-3 py-1 text-xs font-bold tracking-wide"
+              className={headerClass("w-full text-white px-3 py-1 text-xs font-bold tracking-wide")}
               style={{ backgroundColor: primaryColor }}
             >
               Profile
@@ -67,7 +69,7 @@ export const TemplateTealGrid: React.FC<TemplateProps> = ({ data, primaryColor =
         {experiences && experiences.length > 0 && (
           <div className="space-y-0">
             <div
-              className="w-full text-white px-3 py-1 text-xs font-bold tracking-wide"
+              className={headerClass("w-full text-white px-3 py-1 text-xs font-bold tracking-wide")}
               style={{ backgroundColor: primaryColor }}
             >
               Employment
@@ -101,7 +103,7 @@ export const TemplateTealGrid: React.FC<TemplateProps> = ({ data, primaryColor =
         {education && education.length > 0 && (
           <div className="space-y-0">
             <div
-              className="w-full text-white px-3 py-1 text-xs font-bold tracking-wide"
+              className={headerClass("w-full text-white px-3 py-1 text-xs font-bold tracking-wide")}
               style={{ backgroundColor: primaryColor }}
             >
               Education & Qualifications
@@ -128,7 +130,7 @@ export const TemplateTealGrid: React.FC<TemplateProps> = ({ data, primaryColor =
         {/* Professional Affiliations / Skills */}
         <div className="space-y-0">
           <div
-            className="w-full text-white px-3 py-1 text-xs font-bold tracking-wide"
+            className={headerClass("w-full text-white px-3 py-1 text-xs font-bold tracking-wide")}
             style={{ backgroundColor: primaryColor }}
           >
             Professional Affiliations & Skills

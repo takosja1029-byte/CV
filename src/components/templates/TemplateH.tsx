@@ -9,7 +9,11 @@ interface TemplateProps {
 }
 
 export const TemplateH: React.FC<TemplateProps> = ({ data, primaryColor = '#1b4332' }) => {
-  const { personal, experiences, education, skills, languages, achievements, references } = data;
+  const { personal, experiences, education, skills, languages, achievements, references, style } = data;
+  const uppercaseHeaders = style?.uppercaseHeaders !== false;
+  const showIcons = style?.showIcons !== false && style?.showSectionIcons !== false;
+  const headerClass = (base: string) => uppercaseHeaders ? `${base} uppercase` : base;
+  const st = (s: string) => uppercaseHeaders ? s.toUpperCase() : s;
 
   return (
     <div className="bg-white text-slate-800 text-[11px] leading-snug w-full min-h-full font-sans-ui grid grid-cols-12">
@@ -48,8 +52,8 @@ export const TemplateH: React.FC<TemplateProps> = ({ data, primaryColor = '#1b43
         {/* PROFILE */}
         {personal.summary && (
           <div className="space-y-1">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-0.5">
-              PROFILE
+            <h2 className={headerClass("text-xs font-bold  tracking-wider text-slate-900 border-b border-slate-200 pb-0.5")}>
+              {st('Profile')}
             </h2>
             <p className="text-[10px] text-slate-600 leading-relaxed text-justify">{personal.summary}</p>
           </div>
@@ -58,8 +62,8 @@ export const TemplateH: React.FC<TemplateProps> = ({ data, primaryColor = '#1b43
         {/* WORK EXPERIENCE */}
         {experiences && experiences.length > 0 && (
           <div className="space-y-2.5">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-0.5">
-              WORK EXPERIENCE
+            <h2 className={headerClass("text-xs font-bold  tracking-wider text-slate-900 border-b border-slate-200 pb-0.5")}>
+              {st('Work Experience')}
             </h2>
             <div className="space-y-3">
               {experiences.map((exp) => (
@@ -85,8 +89,8 @@ export const TemplateH: React.FC<TemplateProps> = ({ data, primaryColor = '#1b43
         {/* EDUCATION */}
         {education && education.length > 0 && (
           <div className="space-y-2.5">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-0.5">
-              EDUCATION
+            <h2 className={headerClass("text-xs font-bold  tracking-wider text-slate-900 border-b border-slate-200 pb-0.5")}>
+              {st('Education')}
             </h2>
             <div className="space-y-2">
               {education.map((edu) => (
@@ -105,8 +109,8 @@ export const TemplateH: React.FC<TemplateProps> = ({ data, primaryColor = '#1b43
         {/* SKILLS */}
         {skills && skills.length > 0 && (
           <div className="space-y-1.5">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-0.5">
-              SKILLS
+            <h2 className={headerClass("text-xs font-bold  tracking-wider text-slate-900 border-b border-slate-200 pb-0.5")}>
+              {st('Skills')}
             </h2>
             <div className={data.skillStyle === 'segmented' || data.skillStyle === 'bars' ? 'grid grid-cols-2 gap-2' : 'flex flex-wrap gap-1.5'}>
               {skills.map((item, idx) => (
@@ -124,8 +128,8 @@ export const TemplateH: React.FC<TemplateProps> = ({ data, primaryColor = '#1b43
         {/* LANGUAGES */}
         {languages && languages.length > 0 && (
           <div className="space-y-1.5">
-            <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-0.5">
-              LANGUAGES
+            <h2 className={headerClass("text-xs font-bold  tracking-wider text-slate-900 border-b border-slate-200 pb-0.5")}>
+              {st('Languages')}
             </h2>
             <div className="flex flex-wrap gap-1.5">
               {languages.map((lang, idx) => {
@@ -150,8 +154,8 @@ export const TemplateH: React.FC<TemplateProps> = ({ data, primaryColor = '#1b43
         <div className="grid grid-cols-2 gap-4 pt-1">
           {achievements.length > 0 && (
             <div className="space-y-1">
-              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-0.5">
-                ACHIEVEMENTS
+              <h2 className={headerClass("text-xs font-bold  tracking-wider text-slate-900 border-b border-slate-200 pb-0.5")}>
+                {st('Achievements')}
               </h2>
               {achievements.map((ach) => (
                 <div key={ach.id} className="text-[9.5px]">
@@ -164,8 +168,8 @@ export const TemplateH: React.FC<TemplateProps> = ({ data, primaryColor = '#1b43
 
           {references.length > 0 && (
             <div className="space-y-1">
-              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 border-b border-slate-200 pb-0.5">
-                REFERENCES
+              <h2 className={headerClass("text-xs font-bold  tracking-wider text-slate-900 border-b border-slate-200 pb-0.5")}>
+                {st('References')}
               </h2>
               {references.map((ref) => (
                 <div key={ref.id} className="text-[9.5px]">

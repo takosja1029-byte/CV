@@ -9,7 +9,11 @@ interface TemplateProps {
 }
 
 export const TemplateI: React.FC<TemplateProps> = ({ data, primaryColor = '#0891b2' }) => {
-  const { personal, experiences, education, skills, languages, achievements, references } = data;
+  const { personal, experiences, education, skills, languages, achievements, references, style } = data;
+  const uppercaseHeaders = style?.uppercaseHeaders !== false;
+  const showIcons = style?.showIcons !== false && style?.showSectionIcons !== false;
+  const headerClass = (base: string) => uppercaseHeaders ? `${base} uppercase` : base;
+  const st = (s: string) => uppercaseHeaders ? s.toUpperCase() : s;
 
   return (
     <div className="bg-white text-slate-800 text-[11px] leading-snug w-full min-h-full font-sans-ui p-6 border-8 border-cyan-700">
@@ -47,7 +51,7 @@ export const TemplateI: React.FC<TemplateProps> = ({ data, primaryColor = '#0891
             {/* WORK EXPERIENCE */}
             {experiences && experiences.length > 0 && (
               <div className="space-y-3">
-                <h2 className="text-xs font-bold uppercase tracking-wider text-cyan-800 border-b-2 border-cyan-600 pb-0.5">
+                <h2 className={headerClass("text-xs font-bold tracking-wider text-cyan-800 border-b-2 border-cyan-600 pb-0.5")}>
                   Work Experience
                 </h2>
                 <div className="space-y-3">
@@ -74,7 +78,7 @@ export const TemplateI: React.FC<TemplateProps> = ({ data, primaryColor = '#0891
             {/* EDUCATION */}
             {education && education.length > 0 && (
               <div className="space-y-3">
-                <h2 className="text-xs font-bold uppercase tracking-wider text-cyan-800 border-b-2 border-cyan-600 pb-0.5">
+                <h2 className={headerClass("text-xs font-bold tracking-wider text-cyan-800 border-b-2 border-cyan-600 pb-0.5")}>
                   Education
                 </h2>
                 <div className="space-y-2.5">
@@ -97,7 +101,7 @@ export const TemplateI: React.FC<TemplateProps> = ({ data, primaryColor = '#0891
             {/* SKILLS */}
             {skills && skills.length > 0 && (
               <div className="space-y-2">
-                <h2 className="text-xs font-bold uppercase tracking-wider text-cyan-800 border-b-2 border-cyan-600 pb-0.5">
+                <h2 className={headerClass("text-xs font-bold tracking-wider text-cyan-800 border-b-2 border-cyan-600 pb-0.5")}>
                   Skills
                 </h2>
                 <div className={data.skillStyle === 'segmented' || data.skillStyle === 'bars' ? 'space-y-2' : 'flex flex-wrap gap-1.5'}>
@@ -116,7 +120,7 @@ export const TemplateI: React.FC<TemplateProps> = ({ data, primaryColor = '#0891
             {/* LANGUAGES */}
             {languages && languages.length > 0 && (
               <div className="space-y-2">
-                <h2 className="text-xs font-bold uppercase tracking-wider text-cyan-800 border-b-2 border-cyan-600 pb-0.5">
+                <h2 className={headerClass("text-xs font-bold tracking-wider text-cyan-800 border-b-2 border-cyan-600 pb-0.5")}>
                   Languages
                 </h2>
                 <div className="flex flex-wrap gap-1.5">
@@ -141,7 +145,7 @@ export const TemplateI: React.FC<TemplateProps> = ({ data, primaryColor = '#0891
             {/* ACHIEVEMENTS */}
             {achievements && achievements.length > 0 && (
               <div className="space-y-2">
-                <h2 className="text-xs font-bold uppercase tracking-wider text-cyan-800 border-b-2 border-cyan-600 pb-0.5">
+                <h2 className={headerClass("text-xs font-bold tracking-wider text-cyan-800 border-b-2 border-cyan-600 pb-0.5")}>
                   Achievements
                 </h2>
                 <div className="space-y-2">
@@ -158,7 +162,7 @@ export const TemplateI: React.FC<TemplateProps> = ({ data, primaryColor = '#0891
             {/* REFERENCES */}
             {references && references.length > 0 && (
               <div className="space-y-2">
-                <h2 className="text-xs font-bold uppercase tracking-wider text-cyan-800 border-b-2 border-cyan-600 pb-0.5">
+                <h2 className={headerClass("text-xs font-bold tracking-wider text-cyan-800 border-b-2 border-cyan-600 pb-0.5")}>
                   References
                 </h2>
                 <div className="space-y-2">

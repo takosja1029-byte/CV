@@ -16,7 +16,9 @@ export const TemplateATSModern: React.FC<TemplateProps> = ({
   data,
   primaryColor = '#0f172a',
 }) => {
-  const { personal, experiences, education, skills, languages, achievements, projects, certifications } = data;
+  const { personal, experiences, education, skills, languages, achievements, projects, certifications, style } = data;
+  const uppercaseHeaders = style?.uppercaseHeaders !== false;
+  const headerClass = (base: string) => uppercaseHeaders ? `${base} uppercase` : base;
 
   return (
     <div className="bg-white text-slate-900 w-full min-h-full font-sans flex flex-col p-10 shadow-sm leading-normal">
@@ -50,7 +52,7 @@ export const TemplateATSModern: React.FC<TemplateProps> = ({
       {/* Professional Summary */}
       {personal.summary && (
         <section className="mb-5">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-950 border-b border-slate-300 pb-1 mb-2">
+          <h2 className={headerClass("text-xs font-bold  tracking-wider text-slate-950 border-b border-slate-300 pb-1 mb-2")}>
             Professional Summary
           </h2>
           <p className="text-xs leading-relaxed text-slate-700">
@@ -62,7 +64,7 @@ export const TemplateATSModern: React.FC<TemplateProps> = ({
       {/* Work Experience */}
       {experiences && experiences.length > 0 && (
         <section className="mb-5">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-950 border-b border-slate-300 pb-1 mb-3">
+          <h2 className={headerClass("text-xs font-bold  tracking-wider text-slate-950 border-b border-slate-300 pb-1 mb-3")}>
             Professional Experience
           </h2>
           <div className="space-y-3.5">
@@ -98,7 +100,7 @@ export const TemplateATSModern: React.FC<TemplateProps> = ({
       {/* Skills */}
       {skills && skills.length > 0 && (
         <section className="mb-5">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-950 border-b border-slate-300 pb-1 mb-2">
+          <h2 className={headerClass("text-xs font-bold  tracking-wider text-slate-950 border-b border-slate-300 pb-1 mb-2")}>
             Skills & Technical Proficiencies
           </h2>
           <div className="text-xs text-slate-800 leading-relaxed">
@@ -118,7 +120,7 @@ export const TemplateATSModern: React.FC<TemplateProps> = ({
       {/* Education */}
       {education && education.length > 0 && (
         <section className="mb-5">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-950 border-b border-slate-300 pb-1 mb-2">
+          <h2 className={headerClass("text-xs font-bold  tracking-wider text-slate-950 border-b border-slate-300 pb-1 mb-2")}>
             Education
           </h2>
           <div className="space-y-2.5">
@@ -147,7 +149,7 @@ export const TemplateATSModern: React.FC<TemplateProps> = ({
       {/* Projects */}
       {projects && projects.length > 0 && (
         <section className="mb-5">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-950 border-b border-slate-300 pb-1 mb-2">
+          <h2 className={headerClass("text-xs font-bold  tracking-wider text-slate-950 border-b border-slate-300 pb-1 mb-2")}>
             Key Projects
           </h2>
           <div className="space-y-2.5">
@@ -171,7 +173,7 @@ export const TemplateATSModern: React.FC<TemplateProps> = ({
       {/* Certifications */}
       {certifications && certifications.length > 0 && (
         <section className="mb-4">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-950 border-b border-slate-300 pb-1 mb-1.5">
+          <h2 className={headerClass("text-xs font-bold  tracking-wider text-slate-950 border-b border-slate-300 pb-1 mb-1.5")}>
             Certifications
           </h2>
           <div className="space-y-1 text-xs text-slate-800">
@@ -190,7 +192,7 @@ export const TemplateATSModern: React.FC<TemplateProps> = ({
       {/* Languages & Achievements */}
       {(languages?.length > 0 || achievements?.length > 0) && (
         <section className="mb-2">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-950 border-b border-slate-300 pb-1 mb-1.5">
+          <h2 className={headerClass("text-xs font-bold  tracking-wider text-slate-950 border-b border-slate-300 pb-1 mb-1.5")}>
             Additional Credentials
           </h2>
           {languages?.length > 0 && (

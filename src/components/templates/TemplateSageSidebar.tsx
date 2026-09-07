@@ -8,7 +8,9 @@ interface TemplateProps {
 }
 
 export const TemplateSageSidebar: React.FC<TemplateProps> = ({ data, primaryColor = '#67917f' }) => {
-  const { personal, experiences, education, skills } = data;
+  const { personal, experiences, education, skills, style } = data;
+  const uppercaseHeaders = style?.uppercaseHeaders !== false;
+  const headerClass = (base: string) => uppercaseHeaders ? `${base} uppercase` : base;
 
   return (
     <div className="bg-white text-slate-800 text-[11px] leading-relaxed w-full min-h-full font-sans flex flex-col justify-between select-text">
@@ -32,7 +34,7 @@ export const TemplateSageSidebar: React.FC<TemplateProps> = ({ data, primaryColo
           >
             {/* Personal details */}
             <div className="space-y-2.5">
-              <h2 className="text-xs font-bold text-white tracking-wide border-b border-white/30 pb-1">
+              <h2 className={headerClass("text-xs font-bold text-white tracking-wide border-b border-white/30 pb-1")}>
                 Personal details
               </h2>
               <div className="space-y-2 text-[10px] text-white/95">
@@ -64,7 +66,7 @@ export const TemplateSageSidebar: React.FC<TemplateProps> = ({ data, primaryColo
             {/* Skills with square block bullets */}
             {skills && skills.length > 0 && (
               <div className="space-y-2.5">
-                <h2 className="text-xs font-bold text-white tracking-wide border-b border-white/30 pb-1">
+                <h2 className={headerClass("text-xs font-bold text-white tracking-wide border-b border-white/30 pb-1")}>
                   Skills
                 </h2>
                 <div className="space-y-2.5 text-[9.5px] text-white/95">
@@ -96,7 +98,7 @@ export const TemplateSageSidebar: React.FC<TemplateProps> = ({ data, primaryColo
             {/* Profile */}
             {personal.summary && (
               <div className="space-y-1.5">
-                <h2 className="text-xs font-bold text-slate-900 tracking-wide border-b border-slate-200 pb-1">
+                <h2 className={headerClass("text-xs font-bold text-slate-900 tracking-wide border-b border-slate-200 pb-1")}>
                   Profile
                 </h2>
                 <p className="text-[10.5px] text-slate-700 leading-relaxed text-justify">
@@ -108,7 +110,7 @@ export const TemplateSageSidebar: React.FC<TemplateProps> = ({ data, primaryColo
             {/* Employment */}
             {experiences && experiences.length > 0 && (
               <div className="space-y-3">
-                <h2 className="text-xs font-bold text-slate-900 tracking-wide border-b border-slate-200 pb-1">
+                <h2 className={headerClass("text-xs font-bold text-slate-900 tracking-wide border-b border-slate-200 pb-1")}>
                   Employment
                 </h2>
                 <div className="space-y-4">
@@ -139,7 +141,7 @@ export const TemplateSageSidebar: React.FC<TemplateProps> = ({ data, primaryColo
             {/* Education */}
             {education && education.length > 0 && (
               <div className="space-y-3">
-                <h2 className="text-xs font-bold text-slate-900 tracking-wide border-b border-slate-200 pb-1">
+                <h2 className={headerClass("text-xs font-bold text-slate-900 tracking-wide border-b border-slate-200 pb-1")}>
                   Education
                 </h2>
                 <div className="space-y-3">

@@ -9,7 +9,11 @@ interface TemplateProps {
 }
 
 export const TemplateE: React.FC<TemplateProps> = ({ data, primaryColor = '#881337' }) => {
-  const { personal, experiences, education, skills, languages, achievements, references } = data;
+  const { personal, experiences, education, skills, languages, achievements, references, style } = data;
+  const uppercaseHeaders = style?.uppercaseHeaders !== false;
+  const showIcons = style?.showIcons !== false && style?.showSectionIcons !== false;
+  const headerClass = (base: string) => uppercaseHeaders ? `${base} uppercase` : base;
+  const st = (s: string) => uppercaseHeaders ? s.toUpperCase() : s;
 
   return (
     <div className="bg-white text-slate-800 text-[11px] leading-snug w-full min-h-full font-sans-ui">
@@ -42,9 +46,9 @@ export const TemplateE: React.FC<TemplateProps> = ({ data, primaryColor = '#8813
           {/* PROFILE */}
           {personal.summary && (
             <div className="space-y-1.5">
-              <h2 className="font-extrabold text-xs uppercase tracking-wider flex items-center gap-1.5 pb-1 border-b border-slate-200"
+              <h2 className={headerClass("font-extrabold text-xs tracking-wider flex items-center gap-1.5 pb-1 border-b border-slate-200")}
                   style={{ color: primaryColor }}>
-                <User className="w-3.5 h-3.5" /> PROFILE
+                {showIcons && <User className="w-3.5 h-3.5" />} {st('Profile')}
               </h2>
               <p className="text-[10px] text-slate-600 leading-relaxed text-justify">{personal.summary}</p>
             </div>
@@ -53,9 +57,9 @@ export const TemplateE: React.FC<TemplateProps> = ({ data, primaryColor = '#8813
           {/* WORK EXPERIENCE */}
           {experiences && experiences.length > 0 && (
             <div className="space-y-3">
-              <h2 className="font-extrabold text-xs uppercase tracking-wider flex items-center gap-1.5 pb-1 border-b border-slate-200"
+              <h2 className={headerClass("font-extrabold text-xs tracking-wider flex items-center gap-1.5 pb-1 border-b border-slate-200")}
                   style={{ color: primaryColor }}>
-                <Briefcase className="w-3.5 h-3.5" /> WORK EXPERIENCE
+                {showIcons && <Briefcase className="w-3.5 h-3.5" />} {st('Work Experience')}
               </h2>
               <div className="space-y-3.5">
                 {experiences.map((exp) => (
@@ -81,9 +85,9 @@ export const TemplateE: React.FC<TemplateProps> = ({ data, primaryColor = '#8813
           {/* EDUCATION */}
           {education && education.length > 0 && (
             <div className="space-y-3">
-              <h2 className="font-extrabold text-xs uppercase tracking-wider flex items-center gap-1.5 pb-1 border-b border-slate-200"
+              <h2 className={headerClass("font-extrabold text-xs tracking-wider flex items-center gap-1.5 pb-1 border-b border-slate-200")}
                   style={{ color: primaryColor }}>
-                <GraduationCap className="w-3.5 h-3.5" /> EDUCATION
+                {showIcons && <GraduationCap className="w-3.5 h-3.5" />} {st('Education')}
               </h2>
               <div className="space-y-3">
                 {education.map((edu) => (
@@ -103,9 +107,9 @@ export const TemplateE: React.FC<TemplateProps> = ({ data, primaryColor = '#8813
           {/* ACHIEVEMENTS */}
           {achievements && achievements.length > 0 && (
             <div className="space-y-2">
-              <h2 className="font-extrabold text-xs uppercase tracking-wider flex items-center gap-1.5 pb-1 border-b border-slate-200"
+              <h2 className={headerClass("font-extrabold text-xs tracking-wider flex items-center gap-1.5 pb-1 border-b border-slate-200")}
                   style={{ color: primaryColor }}>
-                <Award className="w-3.5 h-3.5" /> ACHIEVEMENTS
+                {showIcons && <Award className="w-3.5 h-3.5" />} {st('Achievements')}
               </h2>
               <div className="space-y-2">
                 {achievements.map((ach) => (
@@ -123,9 +127,9 @@ export const TemplateE: React.FC<TemplateProps> = ({ data, primaryColor = '#8813
         <div className="col-span-5 space-y-6">
           {/* DETAILS */}
           <div className="space-y-2">
-            <h2 className="font-extrabold text-xs uppercase tracking-wider flex items-center gap-1.5 pb-1 border-b border-slate-200"
+            <h2 className={headerClass("font-extrabold text-xs tracking-wider flex items-center gap-1.5 pb-1 border-b border-slate-200")}
                 style={{ color: primaryColor }}>
-              <User className="w-3.5 h-3.5" /> DETAILS
+              {showIcons && <User className="w-3.5 h-3.5" />} {st('Details')}
             </h2>
             <div className="space-y-1.5 text-[10px] text-slate-600">
               {personal.gender && <div className="flex items-center gap-2"><div className="w-5 h-5 rounded-full bg-rose-50 text-rose-700 flex items-center justify-center"><User className="w-3 h-3" /></div><span>{personal.gender}</span></div>}
@@ -142,9 +146,9 @@ export const TemplateE: React.FC<TemplateProps> = ({ data, primaryColor = '#8813
           {/* SKILLS */}
           {skills && skills.length > 0 && (
             <div className="space-y-2">
-              <h2 className="font-extrabold text-xs uppercase tracking-wider flex items-center gap-1.5 pb-1 border-b border-slate-200"
+              <h2 className={headerClass("font-extrabold text-xs tracking-wider flex items-center gap-1.5 pb-1 border-b border-slate-200")}
                   style={{ color: primaryColor }}>
-                <Award className="w-3.5 h-3.5" /> SKILLS
+                {showIcons && <Award className="w-3.5 h-3.5" />} {st('Skills')}
               </h2>
               <div className={data.skillStyle === 'tags' ? 'flex flex-wrap gap-1.5' : 'space-y-2'}>
                 {skills.map((item, idx) => (
@@ -162,9 +166,9 @@ export const TemplateE: React.FC<TemplateProps> = ({ data, primaryColor = '#8813
           {/* LANGUAGES */}
           {languages && languages.length > 0 && (
             <div className="space-y-2">
-              <h2 className="font-extrabold text-xs uppercase tracking-wider flex items-center gap-1.5 pb-1 border-b border-slate-200"
+              <h2 className={headerClass("font-extrabold text-xs tracking-wider flex items-center gap-1.5 pb-1 border-b border-slate-200")}
                   style={{ color: primaryColor }}>
-                <Globe className="w-3.5 h-3.5" /> LANGUAGES
+                {showIcons && <Globe className="w-3.5 h-3.5" />} {st('Languages')}
               </h2>
               <div className="space-y-2">
                 {languages.map((lang, idx) => {
@@ -187,9 +191,9 @@ export const TemplateE: React.FC<TemplateProps> = ({ data, primaryColor = '#8813
           {/* REFERENCES */}
           {references && references.length > 0 && (
             <div className="space-y-2">
-              <h2 className="font-extrabold text-xs uppercase tracking-wider flex items-center gap-1.5 pb-1 border-b border-slate-200"
+              <h2 className={headerClass("font-extrabold text-xs tracking-wider flex items-center gap-1.5 pb-1 border-b border-slate-200")}
                   style={{ color: primaryColor }}>
-                <Users className="w-3.5 h-3.5" /> REFERENCES
+                {showIcons && <Users className="w-3.5 h-3.5" />} {st('References')}
               </h2>
               <div className="space-y-2">
                 {references.map((ref) => (

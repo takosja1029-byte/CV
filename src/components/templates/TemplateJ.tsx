@@ -9,7 +9,9 @@ interface TemplateProps {
 }
 
 export const TemplateJ: React.FC<TemplateProps> = ({ data, primaryColor = '#e11d48' }) => {
-  const { personal, experiences, education, skills, languages, achievements, references } = data;
+  const { personal, experiences, education, skills, languages, achievements, references, style } = data;
+  const uppercaseHeaders = style?.uppercaseHeaders !== false;
+  const headerClass = (base: string) => uppercaseHeaders ? `${base} uppercase` : base;
 
   return (
     <div className="bg-white text-slate-800 text-[11px] leading-snug w-full min-h-full font-sans-ui p-8 space-y-5">
@@ -38,7 +40,7 @@ export const TemplateJ: React.FC<TemplateProps> = ({ data, primaryColor = '#e11d
       {/* PROFILE with centered bullet header • Profile • */}
       {personal.summary && (
         <div className="space-y-1.5">
-          <div className="text-center font-bold text-xs text-rose-600 tracking-wider uppercase flex items-center justify-center gap-2">
+          <div className={headerClass("text-center font-bold text-xs text-rose-600 tracking-wider flex items-center justify-center gap-2")}>
             <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
             <span>Profile</span>
             <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
@@ -50,7 +52,7 @@ export const TemplateJ: React.FC<TemplateProps> = ({ data, primaryColor = '#e11d
       {/* WORK EXPERIENCE with • Work Experience • */}
       {experiences && experiences.length > 0 && (
         <div className="space-y-2.5">
-          <div className="text-center font-bold text-xs text-rose-600 tracking-wider uppercase flex items-center justify-center gap-2">
+          <div className={headerClass("text-center font-bold text-xs text-rose-600 tracking-wider flex items-center justify-center gap-2")}>
             <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
             <span>Work Experience</span>
             <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
@@ -79,7 +81,7 @@ export const TemplateJ: React.FC<TemplateProps> = ({ data, primaryColor = '#e11d
       {/* EDUCATION with • Education • */}
       {education && education.length > 0 && (
         <div className="space-y-2">
-          <div className="text-center font-bold text-xs text-rose-600 tracking-wider uppercase flex items-center justify-center gap-2">
+          <div className={headerClass("text-center font-bold text-xs text-rose-600 tracking-wider flex items-center justify-center gap-2")}>
             <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
             <span>Education</span>
             <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
@@ -101,7 +103,7 @@ export const TemplateJ: React.FC<TemplateProps> = ({ data, primaryColor = '#e11d
       {/* SKILLS */}
       {skills && skills.length > 0 && (
         <div className="space-y-1.5">
-          <div className="text-center font-bold text-xs text-rose-600 tracking-wider uppercase flex items-center justify-center gap-2">
+          <div className={headerClass("text-center font-bold text-xs text-rose-600 tracking-wider flex items-center justify-center gap-2")}>
             <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
             <span>Skills & Proficiencies</span>
             <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
@@ -122,7 +124,7 @@ export const TemplateJ: React.FC<TemplateProps> = ({ data, primaryColor = '#e11d
       {/* LANGUAGES */}
       {languages && languages.length > 0 && (
         <div className="space-y-1.5">
-          <div className="text-center font-bold text-xs text-rose-600 tracking-wider uppercase flex items-center justify-center gap-2">
+          <div className={headerClass("text-center font-bold text-xs text-rose-600 tracking-wider flex items-center justify-center gap-2")}>
             <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
             <span>Languages</span>
             <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
@@ -150,7 +152,7 @@ export const TemplateJ: React.FC<TemplateProps> = ({ data, primaryColor = '#e11d
       <div className="grid grid-cols-2 gap-6 pt-2 border-t border-rose-100">
         {achievements.length > 0 && (
           <div className="space-y-2">
-            <div className="font-bold text-xs text-rose-600 tracking-wider uppercase flex items-center gap-1.5">
+            <div className={headerClass("font-bold text-xs text-rose-600 tracking-wider flex items-center gap-1.5")}>
               <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
               <span>Achievements</span>
             </div>
@@ -165,7 +167,7 @@ export const TemplateJ: React.FC<TemplateProps> = ({ data, primaryColor = '#e11d
 
         {references.length > 0 && (
           <div className="space-y-2">
-            <div className="font-bold text-xs text-rose-600 tracking-wider uppercase flex items-center gap-1.5">
+            <div className={headerClass("font-bold text-xs text-rose-600 tracking-wider flex items-center gap-1.5")}>
               <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
               <span>References</span>
             </div>
