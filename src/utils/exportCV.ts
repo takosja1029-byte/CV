@@ -30,8 +30,9 @@ export async function downloadDirectPdf(
       sheetElement.style.transform = 'none';
       sheetElement.style.transformOrigin = 'top left';
 
-      // Capture at high pixelRatio for crisp typography
-      const imgDataUrl = await htmlToImage.toPng(sheetElement, {
+      // Capture at high pixelRatio for crisp typography. We use toCanvas (not toPng)
+      // because we need raw pixel access to find safe places to cut between pages.
+      const sourceCanvas = await htmlToImage.toCanvas(sheetElement, {
         pixelRatio: 2,
         backgroundColor: '#ffffff',
         cacheBust: true,
@@ -41,15 +42,6 @@ export async function downloadDirectPdf(
       sheetElement.style.transform = originalTransform;
       sheetElement.style.transformOrigin = originalTransformOrigin;
 
-      // Load image to compute exact aspect ratio
-      const img = new Image();
-      await new Promise<void>((resolve, reject) => {
-        img.onload = () => resolve();
-        img.onerror = (e) => reject(e);
-        img.src = imgDataUrl;
-      });
-
-      // Calculate A4 dimensions (210mm x 297mm)
       const pdf = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
@@ -58,22 +50,79 @@ export async function downloadDirectPdf(
 
       const pdfPageWidth = 210;
       const pdfPageHeight = 297;
+      const totalWidthPx = sourceCanvas.width;
+      const totalHeightPx = sourceCanvas.height;
+      const pxPerMm = totalWidthPx / pdfPageWidth;
+      const pageHeightPx = pdfPageHeight * pxPerMm;
       const imgWidth = pdfPageWidth;
-      const imgHeight = (img.height * pdfPageWidth) / img.width;
 
-      let heightLeft = imgHeight;
-      let position = 0;
+      if (totalHeightPx <= pageHeightPx) {
+        // Fits on a single page — no cut needed.
+        const dataUrl = sourceCanvas.toDataURL('image/png');
+        const imgHeight = totalHeightPx / pxPerMm;
+        pdf.addImage(dataUrl, 'PNG', 0, 0, imgWidth, imgHeight, undefined, 'FAST');
+        pdf.save(fileName);
+        return true;
+      }
 
-      // First page
-      pdf.addImage(imgDataUrl, 'PNG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
-      heightLeft -= pdfPageHeight;
+      const ctx = sourceCanvas.getContext('2d');
+      if (!ctx) throw new Error('Could not read canvas context');
+      const imageData = ctx.getImageData(0, 0, totalWidthPx, totalHeightPx).data;
 
-      // Multi-page document handling if content exceeds one A4 page
-      while (heightLeft > 5) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgDataUrl, 'PNG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
-        heightLeft -= pdfPageHeight;
+      // A row counts as "safe to cut" if it's essentially blank (close to white),
+      // sampled sparsely across the width for speed.
+      const isRowBlank = (y: number): boolean => {
+        const rowStart = y * totalWidthPx * 4;
+        for (let x = 0; x < totalWidthPx; x += 8) {
+          const i = rowStart + x * 4;
+          const r = imageData[i], g = imageData[i + 1], b = imageData[i + 2];
+          if (r < 245 || g < 245 || b < 245) return false;
+        }
+        return true;
+      };
+
+      // Search up to ~12mm above the ideal cut line for a blank row, so we never
+      // slice through the middle of a line of text or a bullet point.
+      const maxSearchPx = 12 * pxPerMm;
+      const findCutY = (idealY: number): number => {
+        for (let dy = 0; dy <= maxSearchPx; dy++) {
+          const candidate = Math.round(idealY - dy);
+          if (candidate <= 0) break;
+          if (isRowBlank(candidate)) return candidate;
+        }
+        return Math.round(idealY); // fallback: hard cut if no whitespace found
+      };
+
+      const cutPoints: number[] = [0];
+      let cursor = 0;
+      while (totalHeightPx - cursor > pageHeightPx) {
+        const idealCut = cursor + pageHeightPx;
+        const cutY = findCutY(idealCut);
+        cutPoints.push(cutY > cursor ? cutY : Math.round(idealCut));
+        cursor = cutPoints[cutPoints.length - 1];
+      }
+      cutPoints.push(totalHeightPx);
+
+      const pageCanvas = document.createElement('canvas');
+      const pageCtx = pageCanvas.getContext('2d');
+      if (!pageCtx) throw new Error('Could not create page canvas context');
+
+      for (let p = 0; p < cutPoints.length - 1; p++) {
+        const sliceStart = cutPoints[p];
+        const sliceHeightPx = cutPoints[p + 1] - sliceStart;
+        pageCanvas.width = totalWidthPx;
+        pageCanvas.height = sliceHeightPx;
+        pageCtx.clearRect(0, 0, totalWidthPx, sliceHeightPx);
+        pageCtx.drawImage(
+          sourceCanvas,
+          0, sliceStart, totalWidthPx, sliceHeightPx,
+          0, 0, totalWidthPx, sliceHeightPx
+        );
+        const pageDataUrl = pageCanvas.toDataURL('image/png');
+        const sliceHeightMm = sliceHeightPx / pxPerMm;
+
+        if (p > 0) pdf.addPage();
+        pdf.addImage(pageDataUrl, 'PNG', 0, 0, imgWidth, sliceHeightMm, undefined, 'FAST');
       }
 
       pdf.save(fileName);
@@ -239,7 +288,13 @@ export async function downloadTrueDocx(
           const cleanBullet = b.replace(/^[•\-\*]\s*/, '');
           paragraphs.push(
             new Paragraph({
-              text: cleanBullet,
+              children: [
+                new TextRun({
+                  text: cleanBullet,
+                  size: 19,
+                  font: 'Arial',
+                }),
+              ],
               bullet: { level: 0 },
               spacing: { after: 30 },
             })
@@ -637,10 +692,14 @@ export function downloadWordDoc(
           <h2 style="font-size: 11.5pt; color: ${primaryColor}; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1pt solid #dddddd; padding-bottom: 2pt; margin-top: 12pt; margin-bottom: 5pt; font-weight: bold;">Work Experience</h2>
           ${experiences.map((exp) => `
             <div style="margin-bottom: 8pt;">
-              <div style="font-size: 10.5pt; font-weight: bold; color: #111111;">
-                ${escapeHtml(exp.jobTitle)} — <span style="color: ${primaryColor};">${escapeHtml(exp.company)}</span>
-                <span style="float: right; color: #666666; font-size: 9pt; font-style: italic;">${escapeHtml(exp.startDate)} – ${exp.current ? 'Present' : escapeHtml(exp.endDate)}${exp.location ? ` | ${escapeHtml(exp.location)}` : ''}</span>
-              </div>
+              <table style="width: 100%; border-collapse: collapse;"><tr>
+                <td style="font-size: 10.5pt; font-weight: bold; color: #111111; text-align: left; padding: 0;">
+                  ${escapeHtml(exp.jobTitle)} — <span style="color: ${primaryColor};">${escapeHtml(exp.company)}</span>
+                </td>
+                <td style="color: #666666; font-size: 9pt; font-style: italic; text-align: right; white-space: nowrap; padding: 0;">
+                  ${escapeHtml(exp.startDate)} – ${exp.current ? 'Present' : escapeHtml(exp.endDate)}${exp.location ? ` | ${escapeHtml(exp.location)}` : ''}
+                </td>
+              </tr></table>
               ${exp.bullets && exp.bullets.length > 0 ? `
                 <ul style="margin: 3pt 0 6pt 16pt; padding: 0; font-size: 9.5pt; color: #333333; line-height: 1.35;">
                   ${exp.bullets.map((b) => `<li>${escapeHtml(b.replace(/^[•\-\*]\s*/, ''))}</li>`).join('')}
@@ -655,10 +714,14 @@ export function downloadWordDoc(
           <h2 style="font-size: 11.5pt; color: ${primaryColor}; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1pt solid #dddddd; padding-bottom: 2pt; margin-top: 12pt; margin-bottom: 5pt; font-weight: bold;">Education</h2>
           ${education.map((edu) => `
             <div style="margin-bottom: 6pt;">
-              <div style="font-size: 10.5pt; font-weight: bold; color: #111111;">
-                ${escapeHtml(edu.degree)} — <span style="color: #444444;">${escapeHtml(edu.institution)}</span>
-                <span style="float: right; color: #666666; font-size: 9pt; font-style: italic;">${escapeHtml(edu.endDate || edu.startDate)}</span>
-              </div>
+              <table style="width: 100%; border-collapse: collapse;"><tr>
+                <td style="font-size: 10.5pt; font-weight: bold; color: #111111; text-align: left; padding: 0;">
+                  ${escapeHtml(edu.degree)} — <span style="color: #444444;">${escapeHtml(edu.institution)}</span>
+                </td>
+                <td style="color: #666666; font-size: 9pt; font-style: italic; text-align: right; white-space: nowrap; padding: 0;">
+                  ${escapeHtml(edu.endDate || edu.startDate)}
+                </td>
+              </tr></table>
               ${edu.details ? `<div style="font-size: 9pt; color: #555555; margin-top: 2pt;">${escapeHtml(edu.details)}</div>` : ''}
             </div>
           `).join('')}
@@ -685,8 +748,12 @@ export function downloadWordDoc(
           <h2 style="font-size: 11.5pt; color: ${primaryColor}; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1pt solid #dddddd; padding-bottom: 2pt; margin-top: 12pt; margin-bottom: 5pt; font-weight: bold;">Key Projects</h2>
           ${projects.map((p) => `
             <div style="margin-bottom: 6pt;">
-              <strong>${escapeHtml(p.title)}</strong> ${p.role ? `<span style="color: #666; font-size: 9pt;">(${escapeHtml(p.role)})</span>` : ''}
-              ${p.link ? `<span style="float: right; color: ${primaryColor}; font-size: 9pt;">${escapeHtml(p.link)}</span>` : ''}
+              <table style="width: 100%; border-collapse: collapse;"><tr>
+                <td style="text-align: left; padding: 0;">
+                  <strong>${escapeHtml(p.title)}</strong> ${p.role ? `<span style="color: #666; font-size: 9pt;">(${escapeHtml(p.role)})</span>` : ''}
+                </td>
+                ${p.link ? `<td style="color: ${primaryColor}; font-size: 9pt; text-align: right; white-space: nowrap; padding: 0;">${escapeHtml(p.link)}</td>` : ''}
+              </tr></table>
               <div style="font-size: 9.5pt; color: #444444; margin-top: 2pt;">${escapeHtml(p.description)}</div>
             </div>
           `).join('')}
