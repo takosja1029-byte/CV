@@ -83,12 +83,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
           onClick={() => onSelectSection('resumes')}
           className="flex items-center gap-2.5 text-white font-bold text-lg tracking-tight hover:opacity-90 transition-opacity group cursor-pointer"
         >
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 via-purple-600 to-amber-500 flex items-center justify-center text-white shadow-md shadow-indigo-950/40 group-hover:scale-105 transition-transform">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#0057B8] to-[#00AAAA] flex items-center justify-center text-white shadow-md shadow-black/30 group-hover:scale-105 transition-transform">
             <span className="text-sm select-none leading-none">✨</span>
           </div>
           <div className="flex items-center">
             <span className="text-white">Job</span>
-            <span className="text-indigo-400">Craft</span>
+            <span style={{ color: '#38bdf8' }}>Craft</span>
             <span className="ml-1 text-xs select-none group-hover:rotate-12 transition-transform">💼</span>
           </div>
         </button>
@@ -107,14 +107,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <div className="relative">
           <button
             onClick={() => setIsNewMenuOpen(!isNewMenuOpen)}
-            className="w-full h-10 px-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs rounded-lg flex items-center justify-between transition-all shadow-sm shadow-indigo-950/40 cursor-pointer active:scale-[0.98]"
+            className="w-full h-10 px-3.5 bg-[#0057B8] hover:bg-[#0066d6] text-white font-medium text-xs rounded-lg flex items-center justify-between transition-all shadow-sm shadow-black/30 cursor-pointer active:scale-[0.98]"
           >
             <span className="flex items-center gap-2">
               <Plus className="w-4 h-4" />
               <span className="font-semibold text-xs tracking-tight">Create New</span>
             </span>
             <ChevronDown
-              className={`w-3.5 h-3.5 text-indigo-200 transition-transform duration-200 ${
+              className={`w-3.5 h-3.5 text-blue-100 transition-transform duration-200 ${
                 isNewMenuOpen ? 'rotate-180' : ''
               }`}
             />
@@ -133,9 +133,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     setIsNewMenuOpen(false);
                     onNewResume();
                   }}
-                  className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-indigo-600/20 text-slate-200 hover:text-white flex items-center gap-3 transition-colors cursor-pointer group"
+                  className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-[#0057B8]/20 text-slate-200 hover:text-white flex items-center gap-3 transition-colors cursor-pointer group"
                 >
-                  <div className="w-7 h-7 rounded-md bg-indigo-500/15 text-indigo-400 flex items-center justify-center shrink-0 group-hover:bg-indigo-500/25">
+                  <div className="w-7 h-7 rounded-md bg-[#0057B8]/15 text-[#38bdf8] flex items-center justify-center shrink-0 group-hover:bg-[#0057B8]/25">
                     <FilePlus className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
@@ -149,9 +149,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     setIsNewMenuOpen(false);
                     onNewJob();
                   }}
-                  className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-amber-600/20 text-slate-200 hover:text-white flex items-center gap-3 transition-colors cursor-pointer group mt-0.5"
+                  className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-[#00AAAA]/20 text-slate-200 hover:text-white flex items-center gap-3 transition-colors cursor-pointer group mt-0.5"
                 >
-                  <div className="w-7 h-7 rounded-md bg-amber-500/15 text-amber-400 flex items-center justify-center shrink-0 group-hover:bg-amber-500/25">
+                  <div className="w-7 h-7 rounded-md bg-[#00AAAA]/15 text-[#5eead4] flex items-center justify-center shrink-0 group-hover:bg-[#00AAAA]/25">
                     <Briefcase className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
@@ -183,7 +183,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <div className="flex items-center gap-3">
                 <Icon
                   className={`w-4 h-4 ${
-                    isActive ? 'text-indigo-400' : 'text-slate-400'
+                    isActive ? 'text-[#38bdf8]' : 'text-slate-400'
                   }`}
                 />
                 <span>{item.label}</span>
@@ -192,7 +192,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <span
                   className={`text-[11px] h-5 min-w-[20px] px-1.5 flex items-center justify-center rounded-full font-mono font-semibold ${
                     isActive
-                      ? 'bg-indigo-500/25 text-indigo-200 border border-indigo-500/30'
+                      ? 'bg-[#0057B8]/25 text-blue-100 border border-[#0057B8]/40'
                       : 'bg-slate-800 text-slate-400 border border-slate-700/60'
                   }`}
                 >
@@ -210,7 +210,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             className="w-full h-10 flex items-center justify-between px-3.5 rounded-lg text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors cursor-pointer group border border-transparent"
           >
             <div className="flex items-center gap-3">
-              <Layers className="w-4 h-4 text-indigo-400 group-hover:scale-105 transition-transform" />
+              <Layers className="w-4 h-4 text-[#38bdf8] group-hover:scale-105 transition-transform" />
               <span>Templates Showcase</span>
             </div>
             <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-slate-300 transition-colors" />
@@ -228,7 +228,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   className={`w-8 h-8 rounded-full text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs ${
                     isAdmin
                       ? 'bg-amber-600 ring-2 ring-amber-500/30'
-                      : 'bg-gradient-to-tr from-indigo-600 to-violet-500'
+                      : 'bg-gradient-to-tr from-[#0057B8] to-[#00AAAA]'
                   }`}
                 >
                   {user.name.charAt(0).toUpperCase()}
@@ -263,7 +263,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     planTier === 'Premium Plan'
                       ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
                       : planTier === 'Pro Plan'
-                      ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
+                      ? 'bg-[#0057B8]/20 text-blue-200 border border-[#0057B8]/40'
                       : 'bg-slate-800 text-slate-400'
                   }`}
                 >
@@ -278,12 +278,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
             className="w-full h-10 px-3.5 rounded-lg border border-slate-800/90 hover:border-slate-700 bg-slate-900/60 hover:bg-slate-800/80 text-slate-300 hover:text-white flex items-center justify-between text-xs font-medium transition-all cursor-pointer group"
           >
             <div className="flex items-center gap-2.5">
-              <div className="w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 group-hover:text-indigo-400 transition-colors">
+              <div className="w-6 h-6 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400 group-hover:text-[#38bdf8] transition-colors">
                 <User className="w-3.5 h-3.5" />
               </div>
               <span>Sign In / Account</span>
             </div>
-            <span className="text-[10px] text-indigo-400 font-semibold bg-indigo-950/60 border border-indigo-800/50 px-2 py-0.5 rounded-full">
+            <span className="text-[10px] text-[#7dd3fc] font-semibold bg-[#0057B8]/20 border border-[#0057B8]/40 px-2 py-0.5 rounded-full">
               Free
             </span>
           </button>

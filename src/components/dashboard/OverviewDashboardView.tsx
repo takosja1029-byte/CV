@@ -45,7 +45,7 @@ export const OverviewDashboardView: React.FC<OverviewDashboardViewProps> = ({
       {/* Top Header */}
       <div className="px-8 pt-8 pb-6 bg-white border-b border-slate-200">
         <h1 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-          Welcome to <span>Job</span><span className="text-indigo-600">Craft</span>
+          Welcome to <span>Job</span><span className="text-[#0057B8]">Craft</span>
           <span className="text-xl">✨</span>
         </h1>
         <p className="text-xs text-slate-500 mt-1">
@@ -58,20 +58,20 @@ export const OverviewDashboardView: React.FC<OverviewDashboardViewProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div
             onClick={() => onNavigateSection('resumes')}
-            className="bg-white border border-slate-200 rounded-xl p-5 shadow-2xs hover:shadow-md hover:border-indigo-300 transition-all cursor-pointer group"
+            className="bg-white border border-slate-200 rounded-xl p-5 shadow-2xs hover:shadow-md hover:border-[#0057B8]/40 transition-all cursor-pointer group"
           >
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
                 Resumes
               </span>
-              <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600 group-hover:scale-105 transition-transform">
+              <div className="p-2 rounded-lg bg-[#e6f0fb] text-[#0057B8] group-hover:scale-105 transition-transform">
                 <FileText className="w-4 h-4" />
               </div>
             </div>
             <div className="mt-3 text-3xl font-black text-slate-900">
               {resumes.length}
             </div>
-            <div className="mt-1 text-xs text-indigo-600 font-medium flex items-center gap-1">
+            <div className="mt-1 text-xs text-[#0057B8] font-medium flex items-center gap-1">
               <span>View all resumes</span>
               <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
             </div>
@@ -142,10 +142,10 @@ export const OverviewDashboardView: React.FC<OverviewDashboardViewProps> = ({
         </div>
 
         {/* Quick Actions Bar */}
-        <div className="bg-gradient-to-r from-slate-900 to-indigo-950 text-white rounded-2xl p-6 shadow-md flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="bg-gradient-to-r from-[#003d82] to-[#00807a] text-white rounded-2xl p-6 shadow-md flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-semibold mb-2">
-              <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/15 text-blue-100 text-xs font-semibold mb-2">
+              <Sparkles className="w-3.5 h-3.5 text-[#7dd3fc]" />
               <span>AI-Powered Career Toolkit</span>
             </div>
             <h3 className="text-lg font-bold">Ready to apply for your dream role?</h3>
@@ -157,7 +157,7 @@ export const OverviewDashboardView: React.FC<OverviewDashboardViewProps> = ({
           <div className="flex items-center gap-3 shrink-0">
             <button
               onClick={onCreateResume}
-              className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg shadow-sm flex items-center gap-2 cursor-pointer transition-all active:scale-95"
+              className="px-4 py-2.5 bg-white hover:bg-[#eef6ff] text-[#0057B8] text-xs font-bold rounded-lg shadow-sm flex items-center gap-2 cursor-pointer transition-all active:scale-95"
             >
               <Plus className="w-4 h-4" />
               <span>Create Resume</span>
@@ -178,7 +178,7 @@ export const OverviewDashboardView: React.FC<OverviewDashboardViewProps> = ({
             <h3 className="text-base font-bold text-slate-900">Your Resumes</h3>
             <button
               onClick={() => onNavigateSection('resumes')}
-              className="text-xs font-semibold text-indigo-600 hover:underline flex items-center gap-1 cursor-pointer"
+              className="text-xs font-semibold text-[#0057B8] hover:underline flex items-center gap-1 cursor-pointer"
             >
               <span>View all ({resumes.length})</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -190,13 +190,13 @@ export const OverviewDashboardView: React.FC<OverviewDashboardViewProps> = ({
               <div
                 key={r.id}
                 onClick={() => onEditResume(r)}
-                className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs hover:shadow-md hover:border-indigo-300 transition-all cursor-pointer flex items-center gap-3.5 group"
+                className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs hover:shadow-md hover:border-[#0057B8]/40 transition-all cursor-pointer flex items-center gap-3.5 group"
               >
-                <div className="w-10 h-12 rounded bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center shrink-0">
+                <div className="w-10 h-12 rounded bg-[#e6f0fb] border border-[#cfe3f7] text-[#0057B8] flex items-center justify-center shrink-0">
                   <FileText className="w-5 h-5" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h4 className="font-bold text-slate-900 text-xs truncate group-hover:text-indigo-600 transition-colors">
+                  <h4 className="font-bold text-slate-900 text-xs truncate group-hover:text-[#0057B8] transition-colors">
                     {r.title}
                   </h4>
                   <p className="text-[11px] text-slate-400 truncate">
