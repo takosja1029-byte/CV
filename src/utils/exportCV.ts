@@ -1,6 +1,6 @@
 import { CVData, TemplateId } from '../types';
 import { getSkillLevel, getLanguageLevel } from '../components/templates/TemplateHelpers';
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle } from 'docx';
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell, WidthType, BorderStyle, ImageRun, ShadingType } from 'docx';
 import { saveAs } from 'file-saver';
 import jsPDF from 'jspdf';
 import * as htmlToImage from 'html-to-image';
@@ -151,80 +151,65 @@ export async function downloadTrueDocx(
 ) {
   const { personal, experiences, education, skills, languages, achievements, references, projects, certifications } = data;
   const fileName = `${(personal?.fullName || 'Resume').trim().replace(/\s+/g, '_')}_CV.docx`;
+  const colorHex = (primaryColor || '#1e3a5f').replace('#', '') || '1e3a5f';
 
-  const paragraphs: (Paragraph | Table)[] = [];
+  const isAtsTemplate = typeof templateId === 'string' && templateId.startsWith('template-ats');
+  const isSidebarTemplate =
+    !isAtsTemplate &&
+    (templateId === 'template-b' ||
+      templateId === 'template-c' ||
+      templateId === 'template-e' ||
+      templateId === 'template-f' ||
+      templateId === 'template-h' ||
+      templateId === 'template-i' ||
+      templateId === 'template-j' ||
+      templateId === 'template-k' ||
+      templateId === 'template-l' ||
+      templateId === 'template-m' ||
+      templateId === 'template-sage-sidebar' ||
+      templateId === 'template-black-badge' ||
+      templateId === 'template-teal-grid');
 
-  // 1. Name & Title
-  paragraphs.push(
-    new Paragraph({
-      children: [
-        new TextRun({
-          text: (personal?.fullName || 'Full Name').toUpperCase(),
-          bold: true,
-          size: 32,
-          color: primaryColor.replace('#', '') || '111827',
-          font: 'Arial',
-        }),
-      ],
-      alignment: AlignmentType.CENTER,
-      spacing: { after: 80 },
-    })
-  );
-
-  if (personal?.jobTitle) {
-    paragraphs.push(
-      new Paragraph({
-        children: [
-          new TextRun({
-            text: personal.jobTitle.toUpperCase(),
-            bold: true,
-            size: 20,
-            color: '555555',
-            font: 'Arial',
-          }),
-        ],
-        alignment: AlignmentType.CENTER,
-        spacing: { after: 120 },
-      })
-    );
+  // Best-effort profile photo embed. Never blocks export if it fails (missing photo,
+  // CORS, unsupported format, etc.) -- the rest of the document still exports fine.
+  let photoImageRun: ImageRun | null = null;
+  if (isSidebarTemplate && personal?.photoUrl) {
+    try {
+      const res = await fetch(personal.photoUrl);
+      const blob = await res.blob();
+      const buffer = await blob.arrayBuffer();
+      const mimeToType: Record<string, 'png' | 'jpg' | 'gif' | 'bmp'> = {
+        'image/png': 'png',
+        'image/jpeg': 'jpg',
+        'image/jpg': 'jpg',
+        'image/gif': 'gif',
+        'image/bmp': 'bmp',
+      };
+      const imgType = mimeToType[blob.type];
+      if (imgType) {
+        photoImageRun = new ImageRun({
+          data: buffer,
+          type: imgType,
+          transformation: { width: 96, height: 96 },
+        } as ConstructorParameters<typeof ImageRun>[0]);
+      }
+    } catch {
+      photoImageRun = null;
+    }
   }
 
-  // 2. Contact info line
-  const contactParts: string[] = [];
-  if (personal?.phone) contactParts.push(personal.phone);
-  if (personal?.email) contactParts.push(personal.email);
-  if (personal?.address) contactParts.push(personal.address);
-  if (personal?.linkedin) contactParts.push(`LinkedIn: ${personal.linkedin}`);
-  if (personal?.github) contactParts.push(`GitHub: ${personal.github}`);
-  if (personal?.website) contactParts.push(personal.website);
+  const mainChildren: (Paragraph | Table)[] = [];
+  const sidebarChildren: Paragraph[] = [];
 
-  if (contactParts.length > 0) {
-    paragraphs.push(
-      new Paragraph({
-        children: [
-          new TextRun({
-            text: contactParts.join('  •  '),
-            size: 17,
-            color: '666666',
-            font: 'Arial',
-          }),
-        ],
-        alignment: AlignmentType.CENTER,
-        spacing: { after: 220 },
-      })
-    );
-  }
-
-  // Helper for Section Heading
-  const addSectionHeading = (title: string) => {
-    paragraphs.push(
+  const addMainHeading = (title: string) => {
+    mainChildren.push(
       new Paragraph({
         children: [
           new TextRun({
             text: title.toUpperCase(),
             bold: true,
             size: 21,
-            color: primaryColor.replace('#', '') || '111827',
+            color: colorHex,
             font: 'Arial',
           }),
         ],
@@ -234,36 +219,158 @@ export async function downloadTrueDocx(
     );
   };
 
-  // 3. Summary
-  if (personal?.summary) {
-    addSectionHeading('Professional Summary');
-    paragraphs.push(
+  const addSidebarHeading = (title: string) => {
+    sidebarChildren.push(
       new Paragraph({
         children: [
           new TextRun({
-            text: personal.summary,
-            size: 19,
+            text: title.toUpperCase(),
+            bold: true,
+            size: 18,
+            color: 'FFFFFF',
             font: 'Arial',
           }),
         ],
+        spacing: { before: 200, after: 80 },
+        border: {
+          bottom: { color: 'FFFFFF', space: 3, style: BorderStyle.SINGLE, size: 4 },
+        },
+      })
+    );
+  };
+
+  // --- Header / identity ---
+  if (isSidebarTemplate) {
+    if (photoImageRun) {
+      sidebarChildren.push(
+        new Paragraph({
+          children: [photoImageRun],
+          alignment: AlignmentType.CENTER,
+          spacing: { after: 140 },
+        })
+      );
+    }
+    sidebarChildren.push(
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: (personal?.fullName || 'Full Name').toUpperCase(),
+            bold: true,
+            size: 26,
+            color: 'FFFFFF',
+            font: 'Arial',
+          }),
+        ],
+        spacing: { after: 40 },
+      })
+    );
+    if (personal?.jobTitle) {
+      sidebarChildren.push(
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: personal.jobTitle.toUpperCase(),
+              bold: true,
+              size: 16,
+              color: 'E5E7EB',
+              font: 'Arial',
+            }),
+          ],
+          spacing: { after: 160 },
+        })
+      );
+    }
+
+    const contactLines: string[] = [];
+    if (personal?.phone) contactLines.push(`Phone: ${personal.phone}`);
+    if (personal?.email) contactLines.push(`Email: ${personal.email}`);
+    if (personal?.address) contactLines.push(`Address: ${personal.address}`);
+    if (personal?.linkedin) contactLines.push(`LinkedIn: ${personal.linkedin}`);
+    if (personal?.github) contactLines.push(`GitHub: ${personal.github}`);
+    if (personal?.website) contactLines.push(`Website: ${personal.website}`);
+    if (contactLines.length > 0) {
+      addSidebarHeading('Contact');
+      contactLines.forEach((line) => {
+        sidebarChildren.push(
+          new Paragraph({
+            children: [new TextRun({ text: line, size: 16, color: 'F1F5F9', font: 'Arial' })],
+            spacing: { after: 50 },
+          })
+        );
+      });
+    }
+  } else {
+    mainChildren.push(
+      new Paragraph({
+        children: [
+          new TextRun({
+            text: (personal?.fullName || 'Full Name').toUpperCase(),
+            bold: true,
+            size: 32,
+            color: colorHex,
+            font: 'Arial',
+          }),
+        ],
+        alignment: AlignmentType.CENTER,
+        spacing: { after: 80 },
+      })
+    );
+    if (personal?.jobTitle) {
+      mainChildren.push(
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: personal.jobTitle.toUpperCase(),
+              bold: true,
+              size: 20,
+              color: '555555',
+              font: 'Arial',
+            }),
+          ],
+          alignment: AlignmentType.CENTER,
+          spacing: { after: 120 },
+        })
+      );
+    }
+    const contactParts: string[] = [];
+    if (personal?.phone) contactParts.push(personal.phone);
+    if (personal?.email) contactParts.push(personal.email);
+    if (personal?.address) contactParts.push(personal.address);
+    if (personal?.linkedin) contactParts.push(`LinkedIn: ${personal.linkedin}`);
+    if (personal?.github) contactParts.push(`GitHub: ${personal.github}`);
+    if (personal?.website) contactParts.push(personal.website);
+    if (contactParts.length > 0) {
+      mainChildren.push(
+        new Paragraph({
+          children: [
+            new TextRun({ text: contactParts.join('  •  '), size: 17, color: '666666', font: 'Arial' }),
+          ],
+          alignment: AlignmentType.CENTER,
+          spacing: { after: 220 },
+        })
+      );
+    }
+  }
+
+  // --- Summary ---
+  if (personal?.summary) {
+    addMainHeading('Professional Summary');
+    mainChildren.push(
+      new Paragraph({
+        children: [new TextRun({ text: personal.summary, size: 19, font: 'Arial' })],
         spacing: { after: 160 },
       })
     );
   }
 
-  // 4. Work Experience
+  // --- Work Experience ---
   if (experiences && experiences.length > 0) {
-    addSectionHeading('Work Experience');
+    addMainHeading('Work Experience');
     experiences.forEach((exp) => {
-      paragraphs.push(
+      mainChildren.push(
         new Paragraph({
           children: [
-            new TextRun({
-              text: exp.jobTitle,
-              bold: true,
-              size: 20,
-              font: 'Arial',
-            }),
+            new TextRun({ text: exp.jobTitle, bold: true, size: 20, font: 'Arial' }),
             new TextRun({
               text: exp.company ? ` — ${exp.company}` : '',
               bold: true,
@@ -282,19 +389,12 @@ export async function downloadTrueDocx(
           spacing: { before: 100, after: 40 },
         })
       );
-
       if (exp.bullets && exp.bullets.length > 0) {
         exp.bullets.forEach((b) => {
           const cleanBullet = b.replace(/^[•\-\*]\s*/, '');
-          paragraphs.push(
+          mainChildren.push(
             new Paragraph({
-              children: [
-                new TextRun({
-                  text: cleanBullet,
-                  size: 19,
-                  font: 'Arial',
-                }),
-              ],
+              children: [new TextRun({ text: cleanBullet, size: 19, font: 'Arial' })],
               bullet: { level: 0 },
               spacing: { after: 30 },
             })
@@ -304,25 +404,15 @@ export async function downloadTrueDocx(
     });
   }
 
-  // 5. Education
+  // --- Education ---
   if (education && education.length > 0) {
-    addSectionHeading('Education');
+    addMainHeading('Education');
     education.forEach((edu) => {
-      paragraphs.push(
+      mainChildren.push(
         new Paragraph({
           children: [
-            new TextRun({
-              text: edu.degree,
-              bold: true,
-              size: 20,
-              font: 'Arial',
-            }),
-            new TextRun({
-              text: ` — ${edu.institution}`,
-              color: '333333',
-              size: 19,
-              font: 'Arial',
-            }),
+            new TextRun({ text: edu.degree, bold: true, size: 20, font: 'Arial' }),
+            new TextRun({ text: ` — ${edu.institution}`, color: '333333', size: 19, font: 'Arial' }),
             new TextRun({
               text: `   (${edu.startDate ? `${edu.startDate} – ` : ''}${edu.endDate || 'Present'}${edu.location ? ` | ${edu.location}` : ''})`,
               italics: true,
@@ -334,18 +424,10 @@ export async function downloadTrueDocx(
           spacing: { before: 100, after: 40 },
         })
       );
-
       if (edu.details) {
-        paragraphs.push(
+        mainChildren.push(
           new Paragraph({
-            children: [
-              new TextRun({
-                text: edu.details,
-                size: 18,
-                color: '444444',
-                font: 'Arial',
-              }),
-            ],
+            children: [new TextRun({ text: edu.details, size: 18, color: '444444', font: 'Arial' })],
             spacing: { after: 80 },
           })
         );
@@ -353,65 +435,91 @@ export async function downloadTrueDocx(
     });
   }
 
-  // 6. Skills
-  if (skills && skills.length > 0) {
-    addSectionHeading('Skills & Competencies');
-    const skillList = skills.map((s) => {
-      const { name } = getSkillLevel(s);
-      return name;
-    }).join('  •  ');
-
-    paragraphs.push(
-      new Paragraph({
-        children: [
-          new TextRun({
-            text: skillList,
-            size: 19,
-            color: '222222',
-            font: 'Arial',
-          }),
-        ],
-        spacing: { after: 140 },
-      })
-    );
-  }
-
-  // 7. Languages
-  if (languages && languages.length > 0) {
-    addSectionHeading('Languages');
-    const langList = languages.map((l) => {
-      const { name, level } = getLanguageLevel(l);
-      return `${name} (${level >= 5 ? 'Native / Bilingual' : level >= 4 ? 'Fluent' : level >= 3 ? 'Intermediate' : 'Basic'})`;
-    }).join('  •  ');
-
-    paragraphs.push(
-      new Paragraph({
-        children: [
-          new TextRun({
-            text: langList,
-            size: 19,
-            color: '333333',
-            font: 'Arial',
-          }),
-        ],
-        spacing: { after: 140 },
-      })
-    );
-  }
-
-  // 8. Projects
-  if (projects && projects.length > 0) {
-    addSectionHeading('Key Projects');
-    projects.forEach((proj) => {
-      paragraphs.push(
+  // --- Achievements (previously dropped entirely from the styled export) ---
+  if (achievements && achievements.length > 0) {
+    addMainHeading('Achievements');
+    achievements.forEach((a) => {
+      mainChildren.push(
         new Paragraph({
           children: [
-            new TextRun({
-              text: proj.title,
-              bold: true,
-              size: 19,
-              font: 'Arial',
-            }),
+            new TextRun({ text: `• ${a.title}`, bold: true, size: 19, font: 'Arial' }),
+            new TextRun({ text: a.date ? ` (${a.date})` : '', italics: true, color: '666666', size: 17, font: 'Arial' }),
+          ],
+          spacing: { after: 10 },
+        })
+      );
+      if (a.description) {
+        mainChildren.push(
+          new Paragraph({
+            children: [new TextRun({ text: a.description, size: 18, color: '444444', font: 'Arial' })],
+            spacing: { after: 40 },
+          })
+        );
+      }
+    });
+  }
+
+  // --- Skills ---
+  if (skills && skills.length > 0) {
+    if (isSidebarTemplate) {
+      addSidebarHeading('Skills');
+      skills.forEach((s) => {
+        sidebarChildren.push(
+          new Paragraph({
+            children: [new TextRun({ text: getSkillLevel(s).name, size: 16, color: 'F1F5F9', font: 'Arial' })],
+            bullet: { level: 0 },
+            spacing: { after: 30 },
+          })
+        );
+      });
+    } else {
+      addMainHeading('Skills & Competencies');
+      const skillList = skills.map((s) => getSkillLevel(s).name).join('  •  ');
+      mainChildren.push(
+        new Paragraph({
+          children: [new TextRun({ text: skillList, size: 19, color: '222222', font: 'Arial' })],
+          spacing: { after: 140 },
+        })
+      );
+    }
+  }
+
+  // --- Languages ---
+  if (languages && languages.length > 0) {
+    const langLabel = (l: (typeof languages)[number]) => {
+      const { name, level } = getLanguageLevel(l);
+      return `${name} (${level >= 5 ? 'Native / Bilingual' : level >= 4 ? 'Fluent' : level >= 3 ? 'Intermediate' : 'Basic'})`;
+    };
+    if (isSidebarTemplate) {
+      addSidebarHeading('Languages');
+      languages.forEach((l) => {
+        sidebarChildren.push(
+          new Paragraph({
+            children: [new TextRun({ text: langLabel(l), size: 16, color: 'F1F5F9', font: 'Arial' })],
+            bullet: { level: 0 },
+            spacing: { after: 30 },
+          })
+        );
+      });
+    } else {
+      addMainHeading('Languages');
+      mainChildren.push(
+        new Paragraph({
+          children: [new TextRun({ text: languages.map(langLabel).join('  •  '), size: 19, color: '333333', font: 'Arial' })],
+          spacing: { after: 140 },
+        })
+      );
+    }
+  }
+
+  // --- Projects ---
+  if (projects && projects.length > 0) {
+    addMainHeading('Key Projects');
+    projects.forEach((proj) => {
+      mainChildren.push(
+        new Paragraph({
+          children: [
+            new TextRun({ text: proj.title, bold: true, size: 19, font: 'Arial' }),
             new TextRun({
               text: proj.role ? ` (${proj.role})` : '',
               italics: true,
@@ -421,7 +529,7 @@ export async function downloadTrueDocx(
             }),
             new TextRun({
               text: proj.link ? ` — ${proj.link}` : '',
-              color: primaryColor.replace('#', '') || '1d4ed8',
+              color: colorHex || '1d4ed8',
               size: 17,
               font: 'Arial',
             }),
@@ -430,16 +538,9 @@ export async function downloadTrueDocx(
         })
       );
       if (proj.description) {
-        paragraphs.push(
+        mainChildren.push(
           new Paragraph({
-            children: [
-              new TextRun({
-                text: proj.description,
-                size: 18,
-                color: '444444',
-                font: 'Arial',
-              }),
-            ],
+            children: [new TextRun({ text: proj.description, size: 18, color: '444444', font: 'Arial' })],
             spacing: { after: 60 },
           })
         );
@@ -447,32 +548,16 @@ export async function downloadTrueDocx(
     });
   }
 
-  // 9. Certifications
+  // --- Certifications ---
   if (certifications && certifications.length > 0) {
-    addSectionHeading('Certifications');
+    addMainHeading('Certifications');
     certifications.forEach((cert) => {
-      paragraphs.push(
+      mainChildren.push(
         new Paragraph({
           children: [
-            new TextRun({
-              text: `• ${cert.name}`,
-              bold: true,
-              size: 19,
-              font: 'Arial',
-            }),
-            new TextRun({
-              text: cert.issuer ? ` — ${cert.issuer}` : '',
-              color: '444444',
-              size: 18,
-              font: 'Arial',
-            }),
-            new TextRun({
-              text: cert.date ? ` (${cert.date})` : '',
-              italics: true,
-              color: '666666',
-              size: 17,
-              font: 'Arial',
-            }),
+            new TextRun({ text: `• ${cert.name}`, bold: true, size: 19, font: 'Arial' }),
+            new TextRun({ text: cert.issuer ? ` — ${cert.issuer}` : '', color: '444444', size: 18, font: 'Arial' }),
+            new TextRun({ text: cert.date ? ` (${cert.date})` : '', italics: true, color: '666666', size: 17, font: 'Arial' }),
           ],
           spacing: { after: 30 },
         })
@@ -480,36 +565,75 @@ export async function downloadTrueDocx(
     });
   }
 
-  // 10. References
+  // --- References ---
   if (references && references.length > 0) {
-    addSectionHeading('References');
-    references.forEach((ref) => {
-      paragraphs.push(
-        new Paragraph({
-          children: [
-            new TextRun({
-              text: ref.name,
-              bold: true,
-              size: 19,
-              font: 'Arial',
-            }),
-            new TextRun({
-              text: ` — ${ref.title}, ${ref.company}`,
-              color: '444444',
-              size: 18,
-              font: 'Arial',
-            }),
-            new TextRun({
-              text: ` | Tel: ${ref.phone}${ref.email ? ` | ${ref.email}` : ''}`,
-              color: '666666',
-              size: 17,
-              font: 'Arial',
-            }),
-          ],
-          spacing: { after: 40 },
-        })
-      );
+    if (isSidebarTemplate) {
+      addSidebarHeading('References');
+      references.forEach((ref) => {
+        sidebarChildren.push(
+          new Paragraph({
+            children: [new TextRun({ text: ref.name, bold: true, size: 16, color: 'FFFFFF', font: 'Arial' })],
+            spacing: { before: 40, after: 10 },
+          }),
+          new Paragraph({
+            children: [new TextRun({ text: `${ref.title}, ${ref.company}`, size: 15, color: 'F1F5F9', font: 'Arial' })],
+            spacing: { after: 10 },
+          }),
+          new Paragraph({
+            children: [new TextRun({ text: `Tel: ${ref.phone}`, size: 15, color: 'F1F5F9', font: 'Arial' })],
+            spacing: { after: 60 },
+          })
+        );
+      });
+    } else {
+      addMainHeading('References');
+      references.forEach((ref) => {
+        mainChildren.push(
+          new Paragraph({
+            children: [
+              new TextRun({ text: ref.name, bold: true, size: 19, font: 'Arial' }),
+              new TextRun({ text: ` — ${ref.title}, ${ref.company}`, color: '444444', size: 18, font: 'Arial' }),
+              new TextRun({ text: ` | Tel: ${ref.phone}${ref.email ? ` | ${ref.email}` : ''}`, color: '666666', size: 17, font: 'Arial' }),
+            ],
+            spacing: { after: 40 },
+          })
+        );
+      });
+    }
+  }
+
+  let bodyChildren: (Paragraph | Table)[];
+  let pageMargin = 720;
+
+  if (isSidebarTemplate) {
+    pageMargin = 0;
+    const noBorder = { style: BorderStyle.NONE, size: 0, color: 'FFFFFF' };
+    const sidebarCell = new TableCell({
+      width: { size: 32, type: WidthType.PERCENTAGE },
+      shading: { fill: colorHex, type: ShadingType.CLEAR, color: 'auto' },
+      margins: { top: 300, bottom: 300, left: 260, right: 260 },
+      children: sidebarChildren,
     });
+    const mainCell = new TableCell({
+      width: { size: 68, type: WidthType.PERCENTAGE },
+      margins: { top: 300, bottom: 300, left: 320, right: 300 },
+      children: mainChildren,
+    });
+    const table = new Table({
+      width: { size: 100, type: WidthType.PERCENTAGE },
+      borders: {
+        top: noBorder,
+        bottom: noBorder,
+        left: noBorder,
+        right: noBorder,
+        insideHorizontal: noBorder,
+        insideVertical: noBorder,
+      },
+      rows: [new TableRow({ children: [sidebarCell, mainCell] })],
+    });
+    bodyChildren = [table];
+  } else {
+    bodyChildren = mainChildren;
   }
 
   const doc = new Document({
@@ -518,14 +642,14 @@ export async function downloadTrueDocx(
         properties: {
           page: {
             margin: {
-              top: 720,
-              right: 720,
-              bottom: 720,
-              left: 720,
+              top: pageMargin,
+              right: pageMargin,
+              bottom: pageMargin,
+              left: pageMargin,
             },
           },
         },
-        children: paragraphs,
+        children: bodyChildren,
       },
     ],
   });
