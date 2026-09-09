@@ -14,11 +14,11 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
       <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden animate-in fade-in zoom-in-95 duration-150">
         <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
           <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded bg-indigo-100 text-indigo-700">
+            <div className="p-1.5 rounded bg-blue-100 text-blue-700">
               <HelpCircle className="w-4 h-4" />
             </div>
             <h2 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-              <span>Job</span><span className="text-indigo-600">Craft</span> Guide & Help ✨
+              <span>Job</span><span className="text-blue-600">Craft</span> Guide & Help ✨
             </h2>
           </div>
           <button
@@ -32,7 +32,7 @@ export const HelpModal: React.FC<HelpModalProps> = ({ isOpen, onClose }) => {
         <div className="p-6 space-y-4 text-xs text-slate-600 overflow-y-auto max-h-[70vh]">
           <div className="space-y-2">
             <h3 className="font-bold text-slate-900 flex items-center gap-1.5 text-sm">
-              <FileText className="w-4 h-4 text-indigo-600" />
+              <FileText className="w-4 h-4 text-blue-600" />
               <span>How do I create and customize resumes?</span>
             </h3>
             <p className="text-slate-600 leading-relaxed">

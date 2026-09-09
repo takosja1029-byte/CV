@@ -108,7 +108,7 @@ export const ResumeCardPreview: React.FC<ResumeCardPreviewProps> = ({
       {/* Resume Thumbnail Container (Aspect ratio ~ 1:1.41 A4) */}
       <div
         onClick={() => onEdit(resume)}
-        className="relative w-full aspect-[1/1.414] bg-white rounded-lg border border-slate-200 shadow-xs group-hover:shadow-xl group-hover:border-indigo-300 transition-all duration-200 overflow-hidden cursor-pointer flex flex-col justify-start"
+        className="relative w-full aspect-[1/1.414] bg-white rounded-lg border border-slate-200 shadow-xs group-hover:shadow-xl group-hover:border-blue-300 transition-all duration-200 overflow-hidden cursor-pointer flex flex-col justify-start"
       >
         {/* Real Scaled Preview of Resume */}
         <div className="absolute inset-0 pointer-events-none origin-top-left scale-[0.32] w-[312%] h-[312%] bg-white overflow-hidden p-2 select-none">
@@ -144,9 +144,9 @@ export const ResumeCardPreview: React.FC<ResumeCardPreviewProps> = ({
                   setIsMenuOpen(false);
                   onEdit(resume);
                 }}
-                className="w-full text-left px-3.5 py-2 hover:bg-indigo-50 text-slate-800 flex items-center gap-2.5 font-medium cursor-pointer transition-colors"
+                className="w-full text-left px-3.5 py-2 hover:bg-blue-50 text-slate-800 flex items-center gap-2.5 font-medium cursor-pointer transition-colors"
               >
-                <Edit3 className="w-4 h-4 text-indigo-600" />
+                <Edit3 className="w-4 h-4 text-blue-600" />
                 <span>Edit Resume</span>
               </button>
 
@@ -220,7 +220,7 @@ export const ResumeCardPreview: React.FC<ResumeCardPreviewProps> = ({
         <h3
           onClick={() => onEdit(resume)}
           title={resume.title}
-          className="font-bold text-slate-900 text-sm tracking-tight truncate hover:text-indigo-600 cursor-pointer transition-colors"
+          className="font-bold text-slate-900 text-sm tracking-tight truncate hover:text-blue-600 cursor-pointer transition-colors"
         >
           {resume.title}
         </h3>

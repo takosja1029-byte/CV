@@ -193,7 +193,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
         {/* Modal Top Header */}
         <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center shadow-xs">
+            <div className="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center shadow-xs">
               <Cloud className="w-4 h-4" />
             </div>
             <div>
@@ -227,7 +227,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                     referrerPolicy="no-referrer"
                   />
                 ) : (
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-indigo-600 to-violet-500 text-white flex items-center justify-center font-bold text-lg">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-blue-600 to-teal-500 text-white flex items-center justify-center font-bold text-lg">
                     {(currentUser.displayName || currentUser.email || 'U').charAt(0).toUpperCase()}
                   </div>
                 )}
@@ -243,12 +243,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                 </div>
               </div>
 
-              <div className="p-3 bg-indigo-50/70 border border-indigo-100 rounded-xl text-indigo-900 space-y-1">
+              <div className="p-3 bg-blue-50/70 border border-blue-100 rounded-xl text-blue-900 space-y-1">
                 <div className="font-bold flex items-center gap-1.5">
-                  <Cloud className="w-3.5 h-3.5 text-indigo-600" />
+                  <Cloud className="w-3.5 h-3.5 text-blue-600" />
                   <span>Cloud Persistence Enabled</span>
                 </div>
-                <p className="text-[11px] text-indigo-700/90 leading-relaxed">
+                <p className="text-[11px] text-blue-700/90 leading-relaxed">
                   Your CVs, Cover Letters, and Tracked Jobs are automatically saved to your private Firestore database keyed by your unique User ID.
                 </p>
               </div>
@@ -282,7 +282,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                 className="w-full flex items-center justify-center gap-3 py-2.5 px-4 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-xl border border-slate-300 shadow-xs cursor-pointer transition-all hover:border-slate-400 active:scale-[0.99] disabled:opacity-60"
               >
                 {googleLoading ? (
-                  <Loader2 className="w-4 h-4 animate-spin text-indigo-600" />
+                  <Loader2 className="w-4 h-4 animate-spin text-blue-600" />
                 ) : (
                   <svg className="w-4 h-4" viewBox="0 0 24 24">
                     <path
@@ -376,7 +376,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                         placeholder="Alex Morgan"
                         value={displayName}
                         onChange={(e) => setDisplayName(e.target.value)}
-                        className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+                        className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
                       />
                     </div>
                   </div>
@@ -394,7 +394,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                       placeholder="alex@example.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+                      className="w-full pl-9 pr-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
                     />
                   </div>
                 </div>
@@ -411,7 +411,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                       placeholder="••••••••"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full pl-9 pr-9 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+                      className="w-full pl-9 pr-9 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
                     />
                     <button
                       type="button"
@@ -442,7 +442,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({
                   <button
                     type="submit"
                     disabled={loading}
-                    className="flex items-center gap-2 px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg shadow-sm cursor-pointer transition-all disabled:opacity-60"
+                    className="flex items-center gap-2 px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg shadow-sm cursor-pointer transition-all disabled:opacity-60"
                   >
                     {loading && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                     <span>{mode === 'signup' ? 'Create Account' : 'Sign In'}</span>

@@ -409,7 +409,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
                             <span
                               className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
                                 isPro
-                                  ? 'bg-indigo-100 text-indigo-800'
+                                  ? 'bg-blue-100 text-blue-800'
                                   : isPremium
                                   ? 'bg-amber-100 text-amber-800'
                                   : isJobProposal
@@ -478,7 +478,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
                               {isPro && (
                                 <button
                                   onClick={() => handleApproveWithNotification(sub, 'Pro Plan')}
-                                  className="h-8 px-3 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm cursor-pointer flex items-center gap-1"
+                                  className="h-8 px-3 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm cursor-pointer flex items-center gap-1"
                                 >
                                   <Sparkles className="w-3 h-3" />
                                   <span>Grant Pro</span>
@@ -529,11 +529,11 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
                                   fileData: sub.data.candidateCvData,
                                 });
                               }}
-                              className="h-8 px-3 text-xs font-semibold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-lg flex items-center gap-1.5 cursor-pointer transition-colors shadow-2xs"
+                              className="h-8 px-3 text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg flex items-center gap-1.5 cursor-pointer transition-colors shadow-2xs"
                               title="View & Download candidate CV document"
                             >
-                              <Eye className="w-3.5 h-3.5 text-indigo-600" />
-                              <Download className="w-3.5 h-3.5 text-indigo-600" />
+                              <Eye className="w-3.5 h-3.5 text-blue-600" />
+                              <Download className="w-3.5 h-3.5 text-blue-600" />
                               <span>View & Download CV</span>
                             </button>
                           )}
@@ -569,7 +569,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
                               <p className="font-semibold text-slate-900">
                                 <a
                                   href={`mailto:${sub.data.candidateGmail || sub.userEmail}`}
-                                  className="text-indigo-600 hover:underline"
+                                  className="text-blue-600 hover:underline"
                                 >
                                   {sub.data.candidateGmail || sub.userEmail}
                                 </a>
@@ -648,7 +648,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
                             </div>
 
                             {sub.data?.candidateCvData && (
-                              <span className="text-xs font-semibold text-indigo-600 group-hover:text-indigo-700 flex items-center gap-1 shrink-0">
+                              <span className="text-xs font-semibold text-blue-600 group-hover:text-blue-700 flex items-center gap-1 shrink-0">
                                 <Eye className="w-3.5 h-3.5" />
                                 <span className="hidden sm:inline">Preview Document</span>
                               </span>
@@ -690,13 +690,13 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
                         <div className="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-100 text-slate-700 text-xs leading-relaxed">
                           {sub.details}
                           {sub.data?.applyUrl && (
-                            <div className="mt-2 pt-2 border-t border-slate-200/80 flex items-center gap-1.5 text-indigo-600 font-mono text-[11px]">
+                            <div className="mt-2 pt-2 border-t border-slate-200/80 flex items-center gap-1.5 text-blue-600 font-mono text-[11px]">
                               <ExternalLink className="w-3 h-3" />
                               <a
                                 href={sub.data.applyUrl}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="underline hover:text-indigo-800"
+                                className="underline hover:text-blue-800"
                               >
                                 {sub.data.applyUrl}
                               </a>
@@ -762,7 +762,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
                               u.planTier === 'Premium Plan'
                                 ? 'bg-amber-100 text-amber-800'
                                 : u.planTier === 'Pro Plan'
-                                ? 'bg-indigo-100 text-indigo-800'
+                                ? 'bg-blue-100 text-blue-800'
                                 : 'bg-slate-100 text-slate-700'
                             }`}
                           >
@@ -775,7 +775,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
                             <button
                               onClick={() => handleGrantUserTier(u.uid, u.name, 'Pro Plan')}
                               disabled={u.planTier === 'Pro Plan'}
-                              className="px-2.5 py-1 text-[11px] font-semibold rounded bg-indigo-50 hover:bg-indigo-100 text-indigo-700 disabled:opacity-40 cursor-pointer"
+                              className="px-2.5 py-1 text-[11px] font-semibold rounded bg-blue-50 hover:bg-blue-100 text-blue-700 disabled:opacity-40 cursor-pointer"
                             >
                               Grant Pro
                             </button>
@@ -1070,7 +1070,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
                           href={job.applyUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-indigo-600 hover:underline flex items-center gap-1 font-mono text-[11px] max-w-[200px] truncate"
+                          className="text-blue-600 hover:underline flex items-center gap-1 font-mono text-[11px] max-w-[200px] truncate"
                         >
                           <ExternalLink className="w-3 h-3 shrink-0" />
                           <span className="truncate">{job.applyUrl}</span>
@@ -1194,7 +1194,7 @@ export const AdminDashboardView: React.FC<AdminDashboardViewProps> = ({
                       href={previewCv.fileData}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-indigo-600 hover:underline inline-flex items-center gap-1"
+                      className="text-blue-600 hover:underline inline-flex items-center gap-1"
                     >
                       <span>Open full page</span>
                       <ExternalLink className="w-2.5 h-2.5" />

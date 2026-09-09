@@ -113,13 +113,13 @@ export const UserUpgradeModal: React.FC<UserUpgradeModalProps> = ({
                   onClick={() => setSelectedTier('Pro Plan')}
                   className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
                     selectedTier === 'Pro Plan'
-                      ? 'border-indigo-600 bg-indigo-50/60 ring-2 ring-indigo-500/20'
+                      ? 'border-blue-600 bg-blue-50/60 ring-2 ring-blue-500/20'
                       : 'border-slate-200 hover:border-slate-300'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-1">
                     <span className="font-bold text-slate-900">Pro Plan</span>
-                    <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+                    <Sparkles className="w-3.5 h-3.5 text-blue-600" />
                   </div>
                   <div className="text-[11px] text-slate-600">
                     ATS Harvard & Executive templates, unlimited PDF exports, isolated resume storage.

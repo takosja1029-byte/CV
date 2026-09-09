@@ -189,7 +189,7 @@ export const PublicJobModal: React.FC<PublicJobModalProps> = ({
           <div className="flex items-center gap-2.5">
             <div
               className={`w-8 h-8 rounded-lg flex items-center justify-center text-white ${
-                isAdmin ? 'bg-amber-600' : 'bg-indigo-600'
+                isAdmin ? 'bg-amber-600' : 'bg-blue-600'
               }`}
             >
               <Briefcase className="w-4 h-4" />
@@ -227,11 +227,11 @@ export const PublicJobModal: React.FC<PublicJobModalProps> = ({
           )}
 
           {!isAdmin && (
-            <div className="p-3 bg-indigo-50 border border-indigo-200 rounded-xl text-indigo-900 text-xs flex items-start gap-2.5">
-              <Sparkles className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5" />
+            <div className="p-3 bg-blue-50 border border-blue-200 rounded-xl text-blue-900 text-xs flex items-start gap-2.5">
+              <Sparkles className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
               <div>
                 <span className="font-bold">Admin Verification Required:</span>
-                <p className="text-[11px] text-indigo-700 mt-0.5">
+                <p className="text-[11px] text-blue-700 mt-0.5">
                   Your job suggestion will be reviewed by the admin in the Admin Dashboard before being published to the live job board and alerted to Telegram.
                 </p>
               </div>
@@ -505,7 +505,7 @@ export const PublicJobModal: React.FC<PublicJobModalProps> = ({
               className={`px-5 py-2 text-white text-xs font-bold rounded-lg shadow-sm cursor-pointer transition-all active:scale-[0.99] ${
                 isAdmin
                   ? 'bg-amber-600 hover:bg-amber-700 shadow-amber-950/20'
-                  : 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-950/20'
+                  : 'bg-blue-600 hover:bg-blue-700 shadow-blue-950/20'
               }`}
             >
               {isAdmin ? (initialJob?.id ? 'Update Job' : 'Publish Job') : 'Submit to Admin Review'}

@@ -395,7 +395,7 @@ export const JobEditModal: React.FC<JobEditModalProps> = ({
                     href={formData.jobUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="absolute right-2.5 top-2.5 text-indigo-600 hover:text-indigo-800"
+                    className="absolute right-2.5 top-2.5 text-blue-600 hover:text-blue-800"
                     title="Open employer website link"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />

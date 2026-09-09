@@ -67,7 +67,7 @@ export const TemplatePickerModal: React.FC<TemplatePickerModalProps> = ({
         </div>
 
         {/* Name input & Category Filter */}
-        <div className="px-6 py-3 bg-indigo-50/40 border-b border-indigo-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="px-6 py-3 bg-blue-50/40 border-b border-blue-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2 flex-1">
             <label className="text-xs font-bold text-slate-700 shrink-0">
               Resume Title:
@@ -77,7 +77,7 @@ export const TemplatePickerModal: React.FC<TemplatePickerModalProps> = ({
               value={resumeTitle}
               onChange={(e) => setResumeTitle(e.target.value)}
               placeholder="e.g. Senior Frontend Engineer Resume"
-              className="flex-1 px-3 py-1.5 text-xs bg-white border border-indigo-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+              className="flex-1 px-3 py-1.5 text-xs bg-white border border-blue-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20"
             />
           </div>
 
@@ -111,7 +111,7 @@ export const TemplatePickerModal: React.FC<TemplatePickerModalProps> = ({
                   onDoubleClick={() => handleStartWithTemplate(tmpl.id)}
                   className={`border rounded-xl p-2.5 flex flex-col justify-between cursor-pointer transition-all duration-150 relative group ${
                     isSelected
-                      ? 'border-indigo-600 ring-2 ring-indigo-500/30 bg-indigo-50/30 shadow-md scale-[1.01]'
+                      ? 'border-blue-600 ring-2 ring-blue-500/30 bg-blue-50/30 shadow-md scale-[1.01]'
                       : 'border-slate-200 hover:border-slate-400 hover:bg-slate-50/60'
                   }`}
                 >
@@ -124,7 +124,7 @@ export const TemplatePickerModal: React.FC<TemplatePickerModalProps> = ({
                   <div className="rounded-lg overflow-hidden border border-slate-200 shadow-2xs relative bg-white">
                     <TemplateCardThumbnail templateId={tmpl.id} />
                     {isSelected && (
-                      <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-indigo-600 text-white flex items-center justify-center shadow-sm z-20">
+                      <div className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-sm z-20">
                         <Check className="w-3 h-3 stroke-[2.5]" />
                       </div>
                     )}
@@ -163,7 +163,7 @@ export const TemplatePickerModal: React.FC<TemplatePickerModalProps> = ({
             </button>
             <button
               onClick={() => handleStartWithTemplate(selectedTmpl)}
-              className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-lg shadow-sm flex items-center gap-1.5 cursor-pointer"
+              className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg shadow-sm flex items-center gap-1.5 cursor-pointer"
             >
               <span>Use This Template</span>
               <ArrowRight className="w-3.5 h-3.5" />

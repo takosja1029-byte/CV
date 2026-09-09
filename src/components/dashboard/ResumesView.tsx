@@ -87,7 +87,7 @@ export const ResumesView: React.FC<ResumesViewProps> = ({
               placeholder="Search resumes..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8 pr-3 h-9 text-xs bg-slate-50 hover:bg-slate-100/80 focus:bg-white border border-slate-200 rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 w-44 md:w-56 transition-all"
+              className="pl-8 pr-3 h-9 text-xs bg-slate-50 hover:bg-slate-100/80 focus:bg-white border border-slate-200 rounded-lg text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 w-44 md:w-56 transition-all"
             />
           </div>
 
@@ -98,7 +98,7 @@ export const ResumesView: React.FC<ResumesViewProps> = ({
               title="Grid View"
               className={`h-full px-2.5 flex items-center justify-center transition-colors cursor-pointer ${
                 viewMode === 'grid'
-                  ? 'bg-indigo-600 text-white'
+                  ? 'bg-blue-600 text-white'
                   : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
               }`}
             >
@@ -109,7 +109,7 @@ export const ResumesView: React.FC<ResumesViewProps> = ({
               title="List View"
               className={`h-full px-2.5 flex items-center justify-center transition-colors cursor-pointer border-l border-slate-200 ${
                 viewMode === 'list'
-                  ? 'bg-indigo-600 text-white'
+                  ? 'bg-blue-600 text-white'
                   : 'text-slate-500 hover:text-slate-800 hover:bg-slate-50'
               }`}
             >
@@ -119,7 +119,7 @@ export const ResumesView: React.FC<ResumesViewProps> = ({
 
           <button
             onClick={handleCreateResumeClick}
-            className="h-9 px-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs rounded-lg flex items-center gap-1.5 shadow-sm shadow-indigo-950/20 transition-all cursor-pointer active:scale-[0.98]"
+            className="h-9 px-3.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs rounded-lg flex items-center gap-1.5 shadow-sm shadow-blue-950/20 transition-all cursor-pointer active:scale-[0.98]"
           >
             {isLoggedIn ? <Plus className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5" />}
             <span>New Resume</span>
@@ -156,13 +156,13 @@ export const ResumesView: React.FC<ResumesViewProps> = ({
             <div className="flex flex-col">
               <button
                 onClick={handleCreateResumeClick}
-                className="w-full aspect-[1/1.414] rounded-lg border-2 border-dashed border-slate-300 hover:border-indigo-400 hover:bg-indigo-50/20 transition-all flex flex-col items-center justify-center p-6 text-center cursor-pointer group shadow-2xs active:scale-[0.99]"
+                className="w-full aspect-[1/1.414] rounded-lg border-2 border-dashed border-slate-300 hover:border-blue-400 hover:bg-blue-50/20 transition-all flex flex-col items-center justify-center p-6 text-center cursor-pointer group shadow-2xs active:scale-[0.99]"
               >
-                <div className="text-slate-400 group-hover:text-indigo-600 transition-colors flex flex-col items-center gap-2">
-                  <span className="font-semibold text-sm text-slate-500 group-hover:text-indigo-600">
+                <div className="text-slate-400 group-hover:text-blue-600 transition-colors flex flex-col items-center gap-2">
+                  <span className="font-semibold text-sm text-slate-500 group-hover:text-blue-600">
                     Create new resume
                   </span>
-                  <Plus className="w-6 h-6 text-slate-400 group-hover:text-indigo-600 group-hover:scale-110 transition-transform font-light" />
+                  <Plus className="w-6 h-6 text-slate-400 group-hover:text-blue-600 group-hover:scale-110 transition-transform font-light" />
                   {!isLoggedIn && (
                     <span className="text-[11px] text-amber-800 bg-amber-100/80 px-2 py-0.5 rounded-full border border-amber-200 mt-1 flex items-center gap-1 font-medium">
                       <Lock className="w-2.5 h-2.5" /> Sign in required
@@ -200,13 +200,13 @@ export const ResumesView: React.FC<ResumesViewProps> = ({
               {/* Create New in List View */}
               <button
                 onClick={handleCreateResumeClick}
-                className="w-full px-5 py-3.5 hover:bg-indigo-50/40 flex items-center gap-3 text-left transition-colors group cursor-pointer"
+                className="w-full px-5 py-3.5 hover:bg-blue-50/40 flex items-center gap-3 text-left transition-colors group cursor-pointer"
               >
-                <div className="w-8 h-8 rounded-md border border-dashed border-indigo-300 text-indigo-600 flex items-center justify-center bg-indigo-50">
+                <div className="w-8 h-8 rounded-md border border-dashed border-blue-300 text-blue-600 flex items-center justify-center bg-blue-50">
                   <Plus className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="text-sm font-semibold text-indigo-600 group-hover:underline">
+                  <span className="text-sm font-semibold text-blue-600 group-hover:underline">
                     + Create new resume
                   </span>
                   <p className="text-xs text-slate-400">
@@ -229,7 +229,7 @@ export const ResumesView: React.FC<ResumesViewProps> = ({
                       <div className="min-w-0">
                         <h4
                           onClick={() => onEditResume(resume)}
-                          className="font-bold text-slate-900 text-sm truncate hover:text-indigo-600 cursor-pointer transition-colors"
+                          className="font-bold text-slate-900 text-sm truncate hover:text-blue-600 cursor-pointer transition-colors"
                         >
                           {resume.title}
                         </h4>
@@ -253,7 +253,7 @@ export const ResumesView: React.FC<ResumesViewProps> = ({
                     <div className="col-span-2 flex items-center justify-end gap-1.5">
                       <button
                         onClick={() => onEditResume(resume)}
-                        className="px-2.5 py-1 text-xs font-semibold text-indigo-600 hover:bg-indigo-50 rounded-md transition-colors cursor-pointer"
+                        className="px-2.5 py-1 text-xs font-semibold text-blue-600 hover:bg-blue-50 rounded-md transition-colors cursor-pointer"
                       >
                         Edit
                       </button>

@@ -212,7 +212,7 @@ export const JobsTrackerView: React.FC<JobsTrackerViewProps> = ({
                               target="_blank"
                               rel="noreferrer"
                               onClick={(e) => e.stopPropagation()}
-                              className="text-[10px] text-indigo-600 hover:underline flex items-center gap-0.5"
+                              className="text-[10px] text-blue-600 hover:underline flex items-center gap-0.5"
                             >
                               <span>Link</span>
                               <ExternalLink className="w-2.5 h-2.5" />
